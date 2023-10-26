@@ -1,7 +1,7 @@
 package net.joefoxe.hexerei.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import org.joml.Vector3f;
+import net.joefoxe.hexerei.util.legacymath.Vector3f;
 import net.joefoxe.hexerei.client.renderer.entity.custom.BroomEntity;
 import net.joefoxe.hexerei.item.ModItems;
 import net.minecraft.client.renderer.MultiBufferSource;

@@ -51,9 +51,11 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.animal.Animal;
@@ -67,6 +69,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.TickEvent;
@@ -87,6 +91,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import static net.joefoxe.hexerei.util.ClientProxy.MODEL_SWAPPER;
 
@@ -185,7 +190,8 @@ public class Hexerei {
 		ModSounds.register(eventBus);
 		ModEntityTypes.register(eventBus);
 		ModBiomeModifiers.register(eventBus);
-		ModBiomes.register(eventBus);
+		//ModBiomes.register(eventBus);
+		//ModBiomes.init();
 		ModLootModifiers.init();
 		HexereiModNameTooltipCompat.init();
 
@@ -220,9 +226,15 @@ public class Hexerei {
 
 	public void gatherData(GatherDataEvent event) {
 		DataGenerator gen = event.getGenerator();
+		PackOutput output = event.getGenerator().getPackOutput();
+		CompletableFuture<HolderLookup.Provider> provider = event.getLookupProvider();
+		ExistingFileHelper helper = event.getExistingFileHelper();
+		DatapackBuiltinEntriesProvider datapackProvider = new RegistryDataGenerator(output, provider);
+		CompletableFuture<HolderLookup.Provider> lookupProvider = datapackProvider.getRegistryProvider();
+		gen.addProvider(event.includeServer(), datapackProvider);
 
-		gen.addProvider(true, new ModRecipeProvider(gen));
-		gen.addProvider(event.includeServer(), new ModBiomeTagsProvider(gen, event.getExistingFileHelper()));
+		gen.addProvider(true, new ModRecipeProvider(output));
+		gen.addProvider(event.includeServer(), new ModBiomeTagsProvider(gen, provider, helper));
 //		gen.addProvider(event.includeServer(), new HexereiRecipeProvider(gen));
 	}
 

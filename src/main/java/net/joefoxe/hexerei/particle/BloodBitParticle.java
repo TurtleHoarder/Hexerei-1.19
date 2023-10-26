@@ -49,7 +49,7 @@ public class BloodBitParticle extends TextureSheetParticle {
     private static final ParticleRenderType renderType = new ParticleRenderType() {
         @Override
         public void begin(BufferBuilder bufferBuilder, TextureManager textureManager) {
-            RenderSystem.disableTexture();
+            //RenderSystem.disableTexture();
 
             RenderSystem.depthMask(false);
             RenderSystem.enableBlend();

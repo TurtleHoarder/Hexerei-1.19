@@ -12,11 +12,11 @@ public class HexereiRecipeProvider extends RecipeProvider {
 
 
     public HexereiRecipeProvider(DataGenerator generatorIn) {
-        super(generatorIn);
+        super(generatorIn.getPackOutput());
     }
 
     @Override
-    protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
+    protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
 
         SpecialRecipeBuilder.special(KeychainRecipe.SERIALIZER).save(consumer, "hexerei:keychain_apply");
 

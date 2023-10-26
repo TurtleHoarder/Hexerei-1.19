@@ -36,7 +36,12 @@ import static net.joefoxe.hexerei.block.custom.PickableDoubleFlower.AGE;
 
 public class ModConfiguredFeatures {
 
-    public static ResourceKey SELENITE_GEODE_KEY = null;
+    public static ResourceKey<ConfiguredFeature<?, ?>> SELENITE_GEODE_KEY = key("hexerei:selenite_geode");
+    public static ResourceKey<ConfiguredFeature<?, ?>> WILLOW_TREE_KEY = key("hexerei:willow_tree");
+    public static ResourceKey<ConfiguredFeature<?, ?>> MAHOGANY = key("hexerei:mahogany_tree");
+    public static ResourceKey<ConfiguredFeature<?, ?>> WITCH_HAZEL = key("hexerei:witch_hazel_tree");
+
+
 
     public static void bootstrap(BootstapContext<ConfiguredFeature<?, ?>> context) {
         FeatureUtils.register(context,key("hexerei:selenite_geode"), Feature.GEODE,
@@ -56,6 +61,27 @@ public class ModConfiguredFeatures {
                         new GeodeCrackSettings(0.95D, 2.0D, 2), 0.35D, 0.083D, true,
                         UniformInt.of(4, 6), UniformInt.of(3, 4), UniformInt.of(1, 2),
                         -16, 16, 0.05D, 1));
+
+        FeatureUtils.register(context, key("hexerei:willow_tree"), ModFeatures.WILLOW_TREE.get(), new TreeConfiguration.TreeConfigurationBuilder(
+                BlockStateProvider.simple(ModBlocks.WILLOW_LOG.get()),
+                new StraightTrunkPlacer(5, 6, 3),
+                BlockStateProvider.simple(ModBlocks.WILLOW_LEAVES.get()),
+                new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 4),
+                new TwoLayersFeatureSize(1, 0, 2)).build());
+
+        FeatureUtils.register(context, key("hexerei:mahogany_tree"), ModFeatures.MAHOGANY_TREE.get(), new TreeConfiguration.TreeConfigurationBuilder(
+                BlockStateProvider.simple(ModBlocks.MAHOGANY_LOG.get()),
+                new StraightTrunkPlacer(5, 6, 3),
+                BlockStateProvider.simple(ModBlocks.MAHOGANY_LEAVES.get()),
+                new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 4),
+                new TwoLayersFeatureSize(1, 0, 2)).build());
+
+        FeatureUtils.register(context, key("hexerei:witch_hazel_tree"), ModFeatures.WITCH_HAZEL_TREE.get(), new TreeConfiguration.TreeConfigurationBuilder(
+                BlockStateProvider.simple(ModBlocks.WITCH_HAZEL_LOG.get()),
+                new StraightTrunkPlacer(5, 6, 3),
+                BlockStateProvider.simple(ModBlocks.WITCH_HAZEL_LEAVES.get()),
+                new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 4),
+                new TwoLayersFeatureSize(1, 0, 2)).build());
     }
    /* public static final Holder<ConfiguredFeature<GeodeConfiguration, ?>> SELENITE_GEODE =
             FeatureUtils.register("hexerei:selenite_geode", Feature.GEODE,

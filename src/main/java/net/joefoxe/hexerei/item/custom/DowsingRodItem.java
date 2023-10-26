@@ -126,24 +126,24 @@ public class DowsingRodItem extends Item {
 
     public void findSwamp(Level worldIn, Entity entity)
     {
-        if(worldIn instanceof ServerLevel serverLevel){
+       /* if(worldIn instanceof ServerLevel serverLevel){
             Predicate<Holder<Biome>> SWAMP = (p_211672_) ->  BuiltInRegistries.BIOME_SOURCE.getOrCreateTag(BT_SWAMP).contains(p_211672_);
             Pair<BlockPos, Holder<Biome>> pair = serverLevel.findClosestBiome3d(SWAMP, entity.blockPosition(), 6400, 32, 64);
             if(pair != null)
                 this.nearestPos = pair.getFirst();
-        }
+        } */
     }
 
 
 
     public void findJungle(Level worldIn, Entity entity)
     {
-        if(worldIn instanceof ServerLevel serverLevel){
+        /*if(worldIn instanceof ServerLevel serverLevel){
             Predicate<Holder<Biome>> JUNGLE = (p_211672_) -> BuiltInRegistries.BIOME_SOURCE.getOrCreateTag(BiomeTags.IS_JUNGLE).contains(p_211672_);
             Pair<BlockPos, Holder<Biome>> pair = serverLevel.findClosestBiome3d(JUNGLE, entity.blockPosition(), 6400, 32, 64);
             if(pair != null)
                 this.nearestPos = pair.getFirst();
-        }
+        } */
     }
 
     private static TagKey<Biome> createBiomeTag(String name) {

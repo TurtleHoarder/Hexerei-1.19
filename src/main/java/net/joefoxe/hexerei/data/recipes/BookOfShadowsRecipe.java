@@ -10,6 +10,7 @@ import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapedRecipe;
@@ -22,7 +23,7 @@ public class BookOfShadowsRecipe extends ShapedRecipe {
     NonNullList<Ingredient> inputs;
     ItemStack output;
     public BookOfShadowsRecipe(ShapedRecipe compose) {
-        super(compose.getId(), compose.getGroup(), compose.getWidth(), compose.getHeight(), compose.getIngredients(), compose.getResultItem(null));
+        super(compose.getId(), compose.getGroup(), CraftingBookCategory.MISC, compose.getWidth(), compose.getHeight(), compose.getIngredients(), compose.getResultItem(null));
         this.inputs = compose.getIngredients();
         this.output = compose.getResultItem(null);
     }

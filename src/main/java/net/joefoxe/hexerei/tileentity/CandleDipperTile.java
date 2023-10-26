@@ -286,7 +286,7 @@ public class CandleDipperTile extends RandomizableContainerBlockEntity implement
 
             recipes.forEach((iRecipe -> {
 
-                ItemStack output = iRecipe.getResultItem();
+                ItemStack output = iRecipe.getResultItem(null);
                 ItemStack input = iRecipe.getIngredients().get(0).getItems()[0];
                 boolean matchesFluid = iRecipe.getLiquid().getFluid().isSame(mixingCauldronTile.getFluidStack().getFluid()) && iRecipe.getFluidLevelsConsumed() <= mixingCauldronTile.getFluidStack().getAmount();
                 boolean hasFluidTag = iRecipe.getLiquid().hasTag();
@@ -947,7 +947,7 @@ public class CandleDipperTile extends RandomizableContainerBlockEntity implement
             return 1;
         }
 
-        if (!this.items.get(slot).sameItem(stack))
+        if (!ItemStack.isSameItem(this.items.get(slot), (stack)))
             return 0;
         if (!ItemStack.isSameItemSameTags(stack, this.items.get(slot)))
             return 0;

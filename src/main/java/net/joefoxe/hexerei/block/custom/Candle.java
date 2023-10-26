@@ -64,6 +64,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -400,11 +401,11 @@ public class Candle extends AbstractCandleBlock implements ITileEntity<CandleTil
             float rotation = random.nextFloat() * 360f;
             Vec3 offset = new Vec3(random.nextDouble() * 2 * Math.cos(rotation), 0, random.nextDouble() * 2 * Math.sin(rotation));
 
-            if(particle != null && Registry.PARTICLE_TYPE.get(particle.get(random.nextInt(particle.size()))) != null) {
-                if(Registry.PARTICLE_TYPE.get(particle.get(random.nextInt(particle.size()))) != null) {
-                    worldIn.addParticle((ParticleOptions) Registry.PARTICLE_TYPE.get(particle.get(random.nextInt(particle.size()))), true, (double) pos.getX() + 0.5D + offset.x, (double) pos.getY() + random.nextDouble() * 0.15f, (double) pos.getZ() + 0.5D + offset.z, offset.x / 8f, random.nextDouble() * 0.025D, offset.z / 8f);
+            if(particle != null && ForgeRegistries.PARTICLE_TYPES.getValue(particle.get(random.nextInt(particle.size()))) != null) {
+                if(ForgeRegistries.PARTICLE_TYPES.getValue(particle.get(random.nextInt(particle.size()))) != null) {
+                    worldIn.addParticle((ParticleOptions) ForgeRegistries.PARTICLE_TYPES.getValue(particle.get(random.nextInt(particle.size()))), true, (double) pos.getX() + 0.5D + offset.x, (double) pos.getY() + random.nextDouble() * 0.15f, (double) pos.getZ() + 0.5D + offset.z, offset.x / 8f, random.nextDouble() * 0.025D, offset.z / 8f);
                     if (spawnExtraSmoke) {
-                        worldIn.addParticle((ParticleOptions) Registry.PARTICLE_TYPE.get(particle.get(random.nextInt(particle.size()))), true, (double) pos.getX() + 0.5D + offset.x, (double) pos.getY() + random.nextDouble() * 0.15f, (double) pos.getZ() + 0.5D + offset.z, offset.x / 8f, random.nextDouble() * 0.025D, offset.z / 8f);
+                        worldIn.addParticle((ParticleOptions) ForgeRegistries.PARTICLE_TYPES.getValue(particle.get(random.nextInt(particle.size()))), true, (double) pos.getX() + 0.5D + offset.x, (double) pos.getY() + random.nextDouble() * 0.15f, (double) pos.getZ() + 0.5D + offset.z, offset.x / 8f, random.nextDouble() * 0.025D, offset.z / 8f);
                     }
                 }
             }

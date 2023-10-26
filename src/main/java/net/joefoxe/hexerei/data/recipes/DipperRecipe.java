@@ -185,7 +185,7 @@ public class DipperRecipe implements Recipe<SimpleContainer> {
             buffer.writeInt(recipe.getIngredients().size());
             for (Ingredient ing : recipe.getIngredients())
                 ing.toNetwork(buffer);
-            buffer.writeItem(recipe.getResultItem());
+            buffer.writeItem(recipe.getResultItem(null));
 
             buffer.writeFluidStack(recipe.getLiquid());
 

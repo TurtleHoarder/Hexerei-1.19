@@ -143,7 +143,7 @@ public class DryingRackRecipe implements Recipe<SimpleContainer> {
             buffer.writeInt(recipe.getIngredients().size());
             for (Ingredient ing : recipe.getIngredients())
                 ing.toNetwork(buffer);
-            buffer.writeItem(recipe.getResultItem());
+            buffer.writeItem(recipe.getResultItem(null));
 
             buffer.writeInt(recipe.getDryingTime());
         }

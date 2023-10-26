@@ -194,7 +194,7 @@ public class MixingCauldronTile extends RandomizableContainerBlockEntity impleme
     public void setContents(List<ItemStack> stacks, Player player) {
         for (int i = 0; i < stacks.size(); i++) {
             if(i < 8 || !stacks.get(i).isEmpty()) {
-                if(!items.get(i).sameItemStackIgnoreDurability(stacks.get(i))){
+                if(!ItemStack.isSameItem(items.get(i), (stacks.get(i)))) {
                     int slot = player.inventory.findSlotMatchingItem(stacks.get(i));
                     ItemStack stack = ContainerHelper.removeItem(player.inventory.items, slot, 1);
                     player.inventory.placeItemBackInInventory(items.get(i));
@@ -487,8 +487,7 @@ public class MixingCauldronTile extends RandomizableContainerBlockEntity impleme
 
     private void strikeLightning() {
         if(!this.level.isClientSide()) {
-            EntityType.LIGHTNING_BOLT.spawn((ServerLevel)level, null, null,
-                    worldPosition, MobSpawnType.TRIGGERED, true, true);
+           // EntityType.LIGHTNING_BOLT.spawn((ServerLevel)level, null, null, worldPosition, MobSpawnType.TRIGGERED, true, true);
         }
     }
 
@@ -505,7 +504,7 @@ public class MixingCauldronTile extends RandomizableContainerBlockEntity impleme
             if (Shapes.joinIsNotEmpty(Shapes.create(entity.getBoundingBox().move(-blockpos.getX(), -blockpos.getY(), -blockpos.getZ())), BLOOD_SIGIL_SHAPE, BooleanOp.AND)) {
                 if (this.isColliding <= 1 && this.getItemInSlot(9).asItem() == ModItems.BLOOD_SIGIL.get()) {
                     Random random = new Random();
-                    entity.hurt(DamageSource.MAGIC, 3.0f);
+                    //entity.hurt(DamageSource.MAGIC, 3.0f);
 
                     if (fluidStack.isEmpty() || (fluidStack.containsFluid(new FluidStack(ModFluids.BLOOD_FLUID.get(), 1)) && this.getFluidStack().getAmount() < this.getTankCapacity(0))) {
 
@@ -629,13 +628,13 @@ public class MixingCauldronTile extends RandomizableContainerBlockEntity impleme
 
         AtomicBoolean firstRecipe = new AtomicBoolean(false);
         recipe.ifPresent(iRecipe -> {
-            ItemStack output = iRecipe.getResultItem();
+            ItemStack output = iRecipe.getResultItem(null);
             //ask for delay
             FluidStack recipeFluid = iRecipe.getLiquid();
             FluidStack containerFluid = this.getFluidStack();
 
             boolean fluidEqual = recipeFluid.isFluidEqual(containerFluid);
-            boolean outputClear = (inv.getItem(8) == ItemStack.EMPTY || inv.getItem(8).getCount() == 0) || (inv.getItem(8).sameItem(output) && inv.getItem(8).getCount() + output.getCount() <= inv.getItem(8).getMaxStackSize());
+            boolean outputClear = (inv.getItem(8) == ItemStack.EMPTY || inv.getItem(8).getCount() == 0) || (inv.getItem(8).equals(output) && inv.getItem(8).getCount() + output.getCount() <= inv.getItem(8).getMaxStackSize());
             boolean hasEnoughFluid = iRecipe.getFluidLevelsConsumed() <= this.getFluidStack().getAmount();
             boolean needsHeat = iRecipe.getHeatCondition() != FluidMixingRecipe.HeatCondition.NONE;
             boolean needsMoonPhase = iRecipe.getMoonCondition() != MoonPhases.MoonCondition.NONE;
@@ -675,7 +674,7 @@ public class MixingCauldronTile extends RandomizableContainerBlockEntity impleme
 
         if (!firstRecipe.get() && !recipe2.isEmpty()) {
             for (FluidMixingRecipe fluidMixingRecipe : recipe2) {
-                ItemStack output = fluidMixingRecipe.getResultItem();
+                ItemStack output = fluidMixingRecipe.getResultItem(null);
                 //ask for delay
                 FluidStack recipeFluid = fluidMixingRecipe.getLiquid();
                 FluidStack containerFluid = this.getFluidStack();
