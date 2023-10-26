@@ -3,6 +3,7 @@ package net.joefoxe.hexerei.container;
 import com.google.common.collect.Lists;
 import net.joefoxe.hexerei.block.ModBlocks;
 import net.joefoxe.hexerei.data.recipes.WoodcutterRecipe;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
@@ -61,7 +62,7 @@ public class WoodcutterContainer extends AbstractContainerMenu {
     public WoodcutterContainer(int pContainerId, Inventory pPlayerInventory, final ContainerLevelAccess pAccess) {
         super(ModContainers.WOODCUTTER_CONTAINER.get(), pContainerId);
         this.access = pAccess;
-        this.level = pPlayerInventory.player.level;
+        this.level = pPlayerInventory.player.level();
         this.inputSlot = this.addSlot(new Slot(this.container, 0, 26, 44));
         this.resultSlot = this.addSlot(new Slot(this.resultContainer, 1, 142, 56) {
             /**
@@ -80,8 +81,8 @@ public class WoodcutterContainer extends AbstractContainerMenu {
             }
 
             public void onTake(Player p_150672_, ItemStack p_150673_) {
-                p_150673_.onCraftedBy(p_150672_.level, p_150672_, p_150673_.getCount());
-                WoodcutterContainer.this.resultContainer.awardUsedRecipes(p_150672_);
+                p_150673_.onCraftedBy(p_150672_.level(), p_150672_, p_150673_.getCount());
+                WoodcutterContainer.this.resultContainer.awardUsedRecipes(p_150672_, List.of(p_150673_));
                 ItemStack itemstack = WoodcutterContainer.this.inputSlot.remove(recipes.get(WoodcutterContainer.this.selectedRecipeIndex.get()).ingredientCount);
                 if (!itemstack.isEmpty()) {
                     WoodcutterContainer.this.setupResultSlot();
@@ -168,7 +169,7 @@ public class WoodcutterContainer extends AbstractContainerMenu {
 
     private void setupRecipeList(Container pContainer, ItemStack pStack) {
         this.recipes = new ArrayList<>();
-        if(!this.input.sameItem(pStack)) {
+        if(!ItemStack.isSameItem(input, pStack)) {
             if(!this.input.is(Items.AIR) && !this.input.is(lastInput.getItem()) && !this.lastInput.is(Items.AIR))
                 this.selectedRecipeIndex.set(-1);
             if(!this.input.is(lastInput.getItem()))
@@ -191,7 +192,7 @@ public class WoodcutterContainer extends AbstractContainerMenu {
         }
         this.recipesSize = this.recipes.size();
 
-        if(!this.input.sameItem(pStack) || pStack.getCount() != this.input.getCount()) {
+        if(!ItemStack.isSameItem(this.input, pStack) || pStack.getCount() != this.input.getCount()) {
             this.resultSlot.set(ItemStack.EMPTY);
             if(this.lastInput.is(Items.AIR))
                 setupResultSlot();
@@ -204,7 +205,7 @@ public class WoodcutterContainer extends AbstractContainerMenu {
             WoodcutterRecipe woodcutterrecipe = this.recipes.get(this.selectedRecipeIndex.get());
             this.resultContainer.setRecipeUsed(woodcutterrecipe);
             this.lastUsedRecipe = woodcutterrecipe;
-            this.resultSlot.set(woodcutterrecipe.assemble(this.container));
+            this.resultSlot.set(woodcutterrecipe.assemble(this.container, RegistryAccess.EMPTY));
         } else {
             this.resultSlot.set(ItemStack.EMPTY);
         }
@@ -241,7 +242,7 @@ public class WoodcutterContainer extends AbstractContainerMenu {
             Item item = itemstack1.getItem();
             itemstack = itemstack1.copy();
             if (pIndex == 1) {
-                item.onCraftedBy(itemstack1, pPlayer.level, pPlayer);
+                item.onCraftedBy(itemstack1, pPlayer.level(), pPlayer);
                 if (!this.moveItemStackTo(itemstack1, 2, 38, true)) {
                     return ItemStack.EMPTY;
                 }

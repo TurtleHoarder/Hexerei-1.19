@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import net.joefoxe.hexerei.Hexerei;
 import net.joefoxe.hexerei.block.ModBlocks;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -129,7 +130,7 @@ public class PestleAndMortarRecipe implements Recipe<SimpleContainer> {
     }
 
     @Override
-    public ItemStack assemble(SimpleContainer inv) {
+    public ItemStack assemble(SimpleContainer inv, RegistryAccess access) {
         return output;
     }
 
@@ -139,7 +140,7 @@ public class PestleAndMortarRecipe implements Recipe<SimpleContainer> {
     }
 
     @Override
-    public ItemStack getResultItem() {
+    public ItemStack getResultItem(RegistryAccess access) {
 
         return output.copy();
     }
@@ -214,7 +215,7 @@ public class PestleAndMortarRecipe implements Recipe<SimpleContainer> {
             for (Ingredient ing : recipe.getIngredients()) {
                 ing.toNetwork(buffer);
             }
-            buffer.writeItem(recipe.getResultItem());
+            buffer.writeItem(recipe.getResultItem(null));
             buffer.writeInt(recipe.getGrindingTime());
         }
 

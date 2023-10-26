@@ -1,7 +1,7 @@
 package net.joefoxe.hexerei.tileentity.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import net.joefoxe.hexerei.util.legacymath.Vector3f;
 import net.joefoxe.hexerei.block.ModBlocks;
 import net.joefoxe.hexerei.tileentity.CofferTile;
 import net.minecraft.client.Minecraft;
@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.RenderShape;
@@ -1953,8 +1954,8 @@ public class CofferRenderer implements BlockEntityRenderer<CofferTile> {
 
     private void renderItem(ItemStack stack, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn,
                             int combinedLightIn) {
-        Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemTransforms.TransformType.FIXED, combinedLightIn,
-                OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn, 1);
+        Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemDisplayContext.FIXED, combinedLightIn,
+                OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn,Minecraft.getInstance().level, 1);
     }
 
 
@@ -1986,7 +1987,7 @@ public class CofferRenderer implements BlockEntityRenderer<CofferTile> {
                 }
                 case ENTITYBLOCK_ANIMATED -> {
                     ItemStack stack = new ItemStack(p_110913_.getBlock());
-                    IClientItemExtensions.of(stack.getItem()).getCustomRenderer().renderByItem(stack, ItemTransforms.TransformType.NONE, p_110914_, p_110915_, p_110916_, p_110917_);
+                    IClientItemExtensions.of(stack.getItem()).getCustomRenderer().renderByItem(stack, ItemDisplayContext.NONE, p_110914_, p_110915_, p_110916_, p_110917_);
                 }
             }
 

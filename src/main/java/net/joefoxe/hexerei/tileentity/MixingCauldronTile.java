@@ -194,7 +194,6 @@ public class MixingCauldronTile extends RandomizableContainerBlockEntity impleme
     public void setContents(List<ItemStack> stacks, Player player) {
         for (int i = 0; i < stacks.size(); i++) {
             if(i < 8 || !stacks.get(i).isEmpty()) {
-
                 if(!items.get(i).sameItemStackIgnoreDurability(stacks.get(i))){
                     int slot = player.inventory.findSlotMatchingItem(stacks.get(i));
                     ItemStack stack = ContainerHelper.removeItem(player.inventory.items, slot, 1);
@@ -520,7 +519,7 @@ public class MixingCauldronTile extends RandomizableContainerBlockEntity impleme
                                 this.getFluidStack().grow(1);
                             setChanged();
                         }
-                        entity.getLevel().playSound(null, entity.blockPosition(), SoundEvents.HONEY_DRINK, SoundSource.BLOCKS, 1.0F, 1.0F);
+                        entity.level().playSound(null, entity.blockPosition(), SoundEvents.HONEY_DRINK, SoundSource.BLOCKS, 1.0F, 1.0F);
                         if(!level.isClientSide)
                             HexereiPacketHandler.instance.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(worldPosition)), new EmitParticlesPacket(worldPosition, 2, true));
 
@@ -742,7 +741,7 @@ public class MixingCauldronTile extends RandomizableContainerBlockEntity impleme
         this.setItem(5, ItemStack.EMPTY);
         this.setItem(6, ItemStack.EMPTY);
         this.setItem(7, ItemStack.EMPTY);
-        if(this.getItem(8).sameItem(output)){
+        if(ItemStack.isSameItem(this.getItem(8), output)){
             this.getItem(8).setCount(this.getItem(8).getCount() + output.getCount());
         } else
             this.setItem(8, output);

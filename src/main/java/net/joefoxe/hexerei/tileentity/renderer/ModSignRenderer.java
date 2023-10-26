@@ -5,7 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
+import net.joefoxe.hexerei.util.legacymath.Vector3f;
 import net.joefoxe.hexerei.tileentity.ModSignBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -91,15 +91,15 @@ public class ModSignRenderer implements BlockEntityRenderer<ModSignBlockEntity> 
         pPoseStack.scale(0.010416667F, -0.010416667F, 0.010416667F);
         int i = getDarkColor(pBlockEntity);
         int j = 20;
-        FormattedCharSequence[] aformattedcharsequence = pBlockEntity.getRenderMessages(Minecraft.getInstance().isTextFilteringEnabled(), (p_173653_) -> {
+        FormattedCharSequence[] aformattedcharsequence = pBlockEntity.getFrontText().getRenderMessages(Minecraft.getInstance().isTextFilteringEnabled(), (p_173653_) -> {
             List<FormattedCharSequence> list = this.font.split(p_173653_, 90);
             return list.isEmpty() ? FormattedCharSequence.EMPTY : list.get(0);
         });
         int k;
         boolean flag;
         int l;
-        if (pBlockEntity.hasGlowingText()) {
-            k = pBlockEntity.getColor().getTextColor();
+        if (pBlockEntity.getFrontText().hasGlowingText()) {
+            k = pBlockEntity.getFrontText().getColor().getTextColor();
             flag = isOutlineVisible(pBlockEntity, k);
             l = 15728880;
         } else {
@@ -114,7 +114,7 @@ public class ModSignRenderer implements BlockEntityRenderer<ModSignBlockEntity> 
             if (flag) {
                 this.font.drawInBatch8xOutline(formattedcharsequence, f3, (float)(i1 * 10 - 20), k, i, pPoseStack.last().pose(), pBufferSource, l);
             } else {
-                this.font.drawInBatch(formattedcharsequence, f3, (float)(i1 * 10 - 20), k, false, pPoseStack.last().pose(), pBufferSource, false, 0, l);
+                this.font.drawInBatch(formattedcharsequence, f3, (float)(i1 * 10 - 20), k, false, pPoseStack.last().pose(), pBufferSource, Font.DisplayMode.NORMAL, 0, l);
             }
         }
 
@@ -137,12 +137,13 @@ public class ModSignRenderer implements BlockEntityRenderer<ModSignBlockEntity> 
     }
 
     private static int getDarkColor(ModSignBlockEntity pBlockEntity) {
-        int i = pBlockEntity.getColor().getTextColor();
+       /* int i = pBlockEntity.getColor().getTextColor();
         double d0 = 0.4D;
         int j = (int)((double)NativeImage.getR(i) * 0.4D);
         int k = (int)((double)NativeImage.getG(i) * 0.4D);
         int l = (int)((double)NativeImage.getB(i) * 0.4D);
-        return i == DyeColor.BLACK.getTextColor() && pBlockEntity.hasGlowingText() ? -988212 : NativeImage.combine(0, l, k, j);
+        return i == DyeColor.BLACK.getTextColor() && pBlockEntity.hasGlowingText() ? -988212 : NativeImage.combine(0, l, k, j); */
+        return DyeColor.BLACK.getTextColor();
     }
 
     public static WoodType getWoodType(Block pBlock) {

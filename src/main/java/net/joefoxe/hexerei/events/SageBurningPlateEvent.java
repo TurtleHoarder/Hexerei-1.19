@@ -11,7 +11,6 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -22,7 +21,7 @@ import java.util.List;
 @EventBusSubscriber
 public class SageBurningPlateEvent {
 
-    @SubscribeEvent
+    /*@SubscribeEvent
     public void onEntityJoin(LivingSpawnEvent.CheckSpawn e) {
         Level world = e.getLevel().isClientSide() ? null : e.getLevel() instanceof Level ? (Level)e.getLevel() : null;
 
@@ -90,6 +89,6 @@ public class SageBurningPlateEvent {
         }
 
         e.setResult(Result.DENY);
-    }
+    } */
 
 }

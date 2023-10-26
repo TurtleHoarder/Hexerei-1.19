@@ -29,7 +29,7 @@
 //    public float blitOffset;
 //
 //    @Shadow
-//    public abstract void render(ItemStack stack, ItemTransforms.TransformType transform, boolean leftHand, PoseStack matrixStack, MultiBufferSource buffer, int light, int overlay, BakedModel model);
+//    public abstract void render(ItemStack stack, ItemDisplayContext transform, boolean leftHand, PoseStack matrixStack, MultiBufferSource buffer, int light, int overlay, BakedModel model);
 //
 //    @Shadow
 //    public abstract BakedModel getModel(ItemStack p_174265_, @Nullable Level p_174266_, @Nullable LivingEntity p_174267_, int p_174268_);

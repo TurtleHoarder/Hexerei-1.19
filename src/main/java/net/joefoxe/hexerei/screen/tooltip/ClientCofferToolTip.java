@@ -3,14 +3,12 @@ package net.joefoxe.hexerei.screen.tooltip;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
+import net.joefoxe.hexerei.util.legacymath.*;
 import net.joefoxe.hexerei.Hexerei;
 import net.joefoxe.hexerei.data.books.PageDrawing;
 import net.joefoxe.hexerei.item.custom.CofferItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -198,7 +196,7 @@ public class ClientCofferToolTip implements HexereiBookTooltip {
         int guiOffsetY = light == 15728880 ? -1 : 0;
 
 
-        p_92868_ = Minecraft.getInstance().font.drawInBatch(p_92867_, p_92868_ + guiOffsetX, p_92869_ + guiOffsetY, 16777216, false, matrix4f, p_92873_, p_92874_, p_92875_, light);
+       // p_92868_ = Minecraft.getInstance().font.drawInBatch(p_92867_, p_92868_ + guiOffsetX, p_92869_ + guiOffsetY, 16777216, false, matrix4f, p_92873_, Font.DisplayMode.NORMAL, p_92875_, light);
         matrix4f.translate(new Vector3f(0, 0, -0.1f));
 //        p_92868_ = Minecraft.getInstance().font.drawInBatch(p_92867_, p_92868_, p_92869_, p_92870_, false, matrix4f, p_92873_, p_92874_, p_92875_, light);
 //        matrix4f.translate(new Vector3f(0, 0, 0.1f));
@@ -213,8 +211,8 @@ public class ClientCofferToolTip implements HexereiBookTooltip {
         else
             this.blit(matrixStack, xIn, yIn, z, Texture.SLOT);
 
-        p_194033_.renderAndDecorateItem(itemstack, xIn + 1, yIn + 1, slot);
-        p_194033_.renderGuiItemDecorations(p_194031_, itemstack, xIn + 1, yIn + 1);
+        //p_194033_.renderAndDecorateItem(itemstack, xIn + 1, yIn + 1, slot);
+        //p_194033_.renderGuiItemDecorations(p_194031_, itemstack, xIn + 1, yIn + 1);
 
     }
 
@@ -372,7 +370,7 @@ public class ClientCofferToolTip implements HexereiBookTooltip {
     private void blit(PoseStack poseStack, int xIn, int yIn, int zIn, Texture texture) {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE_LOCATION);
-        GuiComponent.blit(poseStack, xIn, yIn, zIn, (float)texture.x, (float)texture.y, texture.w, texture.h, 128, 128);
+        //GuiComponent.blit(poseStack, xIn, yIn, zIn, (float)texture.x, (float)texture.y, texture.w, texture.h, 128, 128);
     }
 
 

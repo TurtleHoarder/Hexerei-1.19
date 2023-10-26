@@ -41,7 +41,8 @@ public class WitchArmorEvent {
 
     @SubscribeEvent
     public void onLivingHurt(LivingHurtEvent event) {
-        if (event.getSource().isMagic()) {
+        /*
+        if (event.getSource().ma) {
             if (event.getSource().getEntity() instanceof LivingEntity livingEntity && isEquippedBy(livingEntity, 3)) {
                 //increase magic damage dealt by 25%
                 event.setAmount(event.getAmount() * 1.25f);
@@ -53,7 +54,7 @@ public class WitchArmorEvent {
 
                 //decrease magic damage taken by 50%
                 event.setAmount(event.getAmount() / 2);
-        }
+        } */
     }
 
     private boolean isEquippedBy(LivingEntity entity, int numEquipCheck) {

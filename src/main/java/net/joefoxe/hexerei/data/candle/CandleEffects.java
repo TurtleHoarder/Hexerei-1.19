@@ -2,6 +2,7 @@ package net.joefoxe.hexerei.data.candle;
 
 import net.joefoxe.hexerei.Hexerei;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -14,9 +15,9 @@ public class CandleEffects {
 
      public static void init() {
          effects = new HashMap<>();
-         for(int i = 0; i < Registry.MOB_EFFECT.size(); i++){
+         for(int i = 0; i < BuiltInRegistries.MOB_EFFECT.size(); i++){
              ForgeRegistries.MOB_EFFECTS.forEach(mobEffect -> {
-                ResourceLocation loc = Registry.MOB_EFFECT.getKey(mobEffect);
+                ResourceLocation loc = BuiltInRegistries.MOB_EFFECT.getKey(mobEffect);
                 String str = loc != null ? loc.toString() : mobEffect.getDescriptionId();
                 effects.put(str, new PotionCandleEffect(mobEffect));
             });

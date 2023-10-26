@@ -3,15 +3,13 @@ package net.joefoxe.hexerei.screen.tooltip;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
+import net.joefoxe.hexerei.util.legacymath.*;
 import net.joefoxe.hexerei.Hexerei;
 import net.joefoxe.hexerei.data.books.PageDrawing;
 import net.joefoxe.hexerei.item.custom.HerbJarItem;
 import net.joefoxe.hexerei.items.JarHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -118,9 +116,8 @@ public class ClientHerbJarToolTip implements HexereiBookTooltip {
             this.blit(matrixStack, xIn, yIn, z, ClientHerbJarToolTip.Texture.BLOCKED_SLOT);
         else
             this.blit(matrixStack, xIn, yIn, z, ClientHerbJarToolTip.Texture.SLOT);
-
-        p_194033_.renderAndDecorateItem(itemstack, xIn + 1, yIn + 1, slot);
-        p_194033_.renderGuiItemDecorations(p_194031_, itemstack, xIn + 1, yIn + 1);
+       // p_194033_.renderAndDecorateItem(itemstack, xIn + 1, yIn + 1, slot);
+       // p_194033_.renderGuiItemDecorations(p_194031_, itemstack, xIn + 1, yIn + 1);
 
     }
 
@@ -180,19 +177,19 @@ public class ClientHerbJarToolTip implements HexereiBookTooltip {
         int guiOffsetY = light == 15728880 ? -1 : 0;
         if (p_92871_) {
             matrix4f.translate(new Vector3f(3/5f, 0, 0));
-            Minecraft.getInstance().font.renderText(p_92867_, p_92868_, p_92869_, p_92870_, false, p_92872_, p_92873_, p_92874_, p_92875_, light);
+            Minecraft.getInstance().font.drawInBatch(p_92867_, p_92868_, p_92869_, p_92870_, false, p_92872_.toJomlMatrix(), p_92873_, Font.DisplayMode.NORMAL, p_92875_, light);
             matrix4f.translate(new Vector3f(-6/5f, 0, 0));
-            Minecraft.getInstance().font.renderText(p_92867_, p_92868_, p_92869_, p_92870_, false, p_92872_, p_92873_, p_92874_, p_92875_, light);
+            Minecraft.getInstance().font.drawInBatch(p_92867_, p_92868_, p_92869_, p_92870_, false, p_92872_.toJomlMatrix(), p_92873_, Font.DisplayMode.NORMAL, p_92875_, light);
             matrix4f.translate(new Vector3f(3/5f, 3/5f, 0));
-            Minecraft.getInstance().font.renderText(p_92867_, p_92868_, p_92869_, p_92870_, false, p_92872_, p_92873_, p_92874_, p_92875_, light);
+            Minecraft.getInstance().font.drawInBatch(p_92867_, p_92868_, p_92869_, p_92870_, false, p_92872_.toJomlMatrix(), p_92873_, Font.DisplayMode.NORMAL, p_92875_, light);
             matrix4f.translate(new Vector3f(0, -6/5f, 0));
-            Minecraft.getInstance().font.renderText(p_92867_, p_92868_, p_92869_, p_92870_, false, p_92872_, p_92873_, p_92874_, p_92875_, light);
+            Minecraft.getInstance().font.drawInBatch(p_92867_, p_92868_, p_92869_, p_92870_, false, p_92872_.toJomlMatrix(), p_92873_, Font.DisplayMode.NORMAL, p_92875_, light);
             matrix4f.translate(new Vector3f(1, 1.75f, 1));
 
 
         }
 
-        p_92868_ = Minecraft.getInstance().font.drawInBatch(p_92867_, p_92868_ + guiOffsetX, p_92869_ + guiOffsetY, 16777216, false, matrix4f, p_92873_, p_92874_, p_92875_, light);
+        p_92868_ = Minecraft.getInstance().font.drawInBatch(p_92867_, p_92868_ + guiOffsetX, p_92869_ + guiOffsetY, 16777216, false, matrix4f.toJomlMatrix(), p_92873_, Font.DisplayMode.NORMAL, p_92875_, light);
 //        p_92868_ = Minecraft.getInstance().font.renderText(p_92867_, p_92868_, p_92869_, p_92870_, false, matrix4f, p_92873_, p_92874_, p_92875_, light);
         return (int)p_92868_ + (p_92871_ ? 1 : 0);
     }
@@ -284,7 +281,7 @@ public class ClientHerbJarToolTip implements HexereiBookTooltip {
     private void blit(PoseStack p_194036_, int p_194037_, int p_194038_, int z, Texture p_194040_) {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE_LOCATION);
-        GuiComponent.blit(p_194036_, p_194037_, p_194038_, z == -420 ? 1 : z, (float)p_194040_.x, (float)p_194040_.y, p_194040_.w, p_194040_.h, 128, 128);
+        //GuiComponent.blit(p_194036_, p_194037_, p_194038_, z == -420 ? 1 : z, (float)p_194040_.x, (float)p_194040_.y, p_194040_.w, p_194040_.h, 128, 128);
     }
 
     private void blit(PoseStack poseStack, VertexConsumer buffer, int xIn, int yIn, int zIn, ClientHerbJarToolTip.Texture texture, int overlay, int light) {

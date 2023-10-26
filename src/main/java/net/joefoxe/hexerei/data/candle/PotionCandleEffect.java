@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -85,8 +86,8 @@ public class PotionCandleEffect extends AbstractCandleEffect{
         for(int i = 0; i < 5; i++){
             float rotation = random.nextFloat() * 360f;
             Vec3 offset = new Vec3(random.nextDouble() * 2 * Math.cos(rotation), 0, random.nextDouble() * 2 * Math.sin(rotation));
-            if(particle != null && Registry.PARTICLE_TYPE.get(particle.get(random.nextInt(particle.size()))) != null)
-                pLevel.addParticle((ParticleOptions) Registry.PARTICLE_TYPE.get(particle.get(random.nextInt(particle.size()))), living.getX(), living.getY() + heightOffset, living.getZ(), offset.x / 16f, (random.nextDouble() + 0.5d) * 0.015d, offset.z / 16f);
+            if(particle != null && BuiltInRegistries.PARTICLE_TYPE.get(particle.get(random.nextInt(particle.size()))) != null)
+                pLevel.addParticle((ParticleOptions) BuiltInRegistries.PARTICLE_TYPE.get(particle.get(random.nextInt(particle.size()))), living.getX(), living.getY() + heightOffset, living.getZ(), offset.x / 16f, (random.nextDouble() + 0.5d) * 0.015d, offset.z / 16f);
         }
     }
 
@@ -97,7 +98,7 @@ public class PotionCandleEffect extends AbstractCandleEffect{
 
     @Override
     public String getLocationName() {
-        ResourceLocation loc = this.effect == null? null : Registry.MOB_EFFECT.getKey(this.effect);
+        ResourceLocation loc = this.effect == null? null : BuiltInRegistries.MOB_EFFECT.getKey(this.effect);
         return loc != null ? loc.toString() : this.effect.getDescriptionId();
     }
 

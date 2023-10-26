@@ -32,7 +32,7 @@ import java.util.function.Consumer;
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = "hexerei", bus = Mod.EventBusSubscriber.Bus.MOD)
 public class WitchArmorItem extends DyeableArmorItem {
 
-    public WitchArmorItem(ArmorMaterial materialIn, EquipmentSlot slot, Properties builder) {
+    public WitchArmorItem(ArmorMaterial materialIn, ArmorItem.Type slot, Properties builder) {
         super(materialIn, slot, builder);
     }
 

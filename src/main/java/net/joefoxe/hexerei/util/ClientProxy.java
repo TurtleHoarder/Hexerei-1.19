@@ -169,18 +169,18 @@ public class ClientProxy implements SidedProxy {
         event.registerLayerDefinition(CandleModel.CANDLE_HERB_LAYER, CandleModel::createBodyLayerHerb);
         event.registerLayerDefinition(CandleModel.CANDLE_GLOW_LAYER, CandleModel::createBodyLayerGlow);
         event.registerLayerDefinition(CandleModel.CANDLE_SWIRL_LAYER, CandleModel::createBodyLayerSwirl);
-        event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation("hexerei", "boat/willow"), "main"), ()-> BoatModel.createBodyModel(false));
-        event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation("hexerei", "boat/polished_willow"), "main"), ()-> BoatModel.createBodyModel(false));
-        event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation("hexerei", "boat/witch_hazel"), "main"), ()-> BoatModel.createBodyModel(false));
-        event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation("hexerei", "boat/polished_witch_hazel"), "main"), ()-> BoatModel.createBodyModel(false));
-        event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation("hexerei", "boat/mahogany"), "main"), ()-> BoatModel.createBodyModel(false));
-        event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation("hexerei", "boat/polished_mahogany"), "main"), ()-> BoatModel.createBodyModel(false));
-        event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation("hexerei", "chest_boat/willow"), "main"), ()-> BoatModel.createBodyModel(true));
-        event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation("hexerei", "chest_boat/polished_willow"), "main"), ()-> BoatModel.createBodyModel(true));
-        event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation("hexerei", "chest_boat/witch_hazel"), "main"), ()-> BoatModel.createBodyModel(true));
-        event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation("hexerei", "chest_boat/polished_witch_hazel"), "main"), ()-> BoatModel.createBodyModel(true));
-        event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation("hexerei", "chest_boat/mahogany"), "main"), ()-> BoatModel.createBodyModel(true));
-        event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation("hexerei", "chest_boat/polished_mahogany"), "main"), ()-> BoatModel.createBodyModel(true));
+        event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation("hexerei", "boat/willow"), "main"), BoatModel::createBodyModel);
+        event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation("hexerei", "boat/polished_willow"), "main"), ()-> BoatModel.createBodyModel());
+        event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation("hexerei", "boat/witch_hazel"), "main"), ()-> BoatModel.createBodyModel());
+        event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation("hexerei", "boat/polished_witch_hazel"), "main"), ()-> BoatModel.createBodyModel());
+        event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation("hexerei", "boat/mahogany"), "main"), ()-> BoatModel.createBodyModel());
+        event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation("hexerei", "boat/polished_mahogany"), "main"), ()-> BoatModel.createBodyModel());
+        event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation("hexerei", "chest_boat/willow"), "main"), ()-> BoatModel.createBodyModel());
+        event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation("hexerei", "chest_boat/polished_willow"), "main"), ()-> BoatModel.createBodyModel());
+        event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation("hexerei", "chest_boat/witch_hazel"), "main"), ()-> BoatModel.createBodyModel());
+        event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation("hexerei", "chest_boat/polished_witch_hazel"), "main"), ()-> BoatModel.createBodyModel());
+        event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation("hexerei", "chest_boat/mahogany"), "main"), ()-> BoatModel.createBodyModel());
+        event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation("hexerei", "chest_boat/polished_mahogany"), "main"), ()-> BoatModel.createBodyModel());
         event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation("hexerei", "chest/mahogany"), "main"), ModChestRenderer::createSingleBodyLayer);
         event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation("hexerei", "chest/mahogany_right"), "main"), ModChestRenderer::createDoubleBodyRightLayer);
         event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation("hexerei", "chest/mahogany_left"), "main"), ModChestRenderer::createDoubleBodyLeftLayer);
@@ -201,23 +201,26 @@ public class ClientProxy implements SidedProxy {
     public static final Map<Character, Float> TEXT_WIDTH = Maps.newHashMap();
 
     @SubscribeEvent
-    public static void onTextureStitch(TextureStitchEvent.Pre event) {
+    //TODO public static void onTextureStitch(TextureStitchEvent.Pre event) {
+    public static void onTextureStitch(TextureStitchEvent event) {
+
         if (!event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
             return;
         }
         registerTextLocations();
         TEXT.forEach((character, resourceLocation) -> {
-            event.addSprite(resourceLocation);
+            //TODO: event.addSprite(resourceLocation);
+            //event.
         });
-        event.addSprite(PageDrawing.SLOT_ATLAS);
-        event.addSprite(PageDrawing.TITLE);
+        //event.addSprite(PageDrawing.SLOT_ATLAS);
+        //event.addSprite(PageDrawing.TITLE);
 
         ResourceLocation atlasLocation = event.getAtlas().location();
         List<StitchedSprite> sprites = ALL.get(atlasLocation);
 
         if (sprites != null) {
             for (StitchedSprite sprite : sprites) {
-                event.addSprite(sprite.getLocation());
+                //event.addSprite(sprite.getLocation());
             }
         }
     }

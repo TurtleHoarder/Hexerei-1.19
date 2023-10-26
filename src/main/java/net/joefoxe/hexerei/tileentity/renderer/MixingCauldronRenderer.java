@@ -1,8 +1,7 @@
 package net.joefoxe.hexerei.tileentity.renderer;
 
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
+import net.joefoxe.hexerei.util.legacymath.*;
 import net.joefoxe.hexerei.Hexerei;
 import net.joefoxe.hexerei.block.ModBlocks;
 import net.joefoxe.hexerei.block.custom.MixingCauldron;
@@ -25,6 +24,7 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
@@ -375,7 +375,7 @@ public class MixingCauldronRenderer implements BlockEntityRenderer<MixingCauldro
         renderQuadsBlock(matrixStack.last().pose(), vertexBuilder, sprite, red, green, blue, alpha, combinedLight);
     }
 
-    private static void renderQuads(Matrix4f matrix, VertexConsumer vertexBuilder, TextureAtlasSprite sprite, float r, float g, float b, float alpha, float heightPercentage, int light){
+    private static void renderQuads(org.joml.Matrix4f matrix, VertexConsumer vertexBuilder, TextureAtlasSprite sprite, float r, float g, float b, float alpha, float heightPercentage, int light){
         float height = MIN_Y + (MAX_Y - MIN_Y) * heightPercentage;
         float minU = sprite.getU(CORNERS * 16);
         float maxU = sprite.getU((1 - CORNERS) * 16);
@@ -387,7 +387,7 @@ public class MixingCauldronRenderer implements BlockEntityRenderer<MixingCauldro
         vertexBuilder.vertex(matrix, 1 - CORNERS, height, CORNERS).color(r, g, b, alpha).uv(maxU, minV).uv2(light).normal(0, 1, 0).endVertex();
     }
 
-    private static void renderQuadsBlock(Matrix4f matrix, VertexConsumer vertexBuilder, TextureAtlasSprite sprite, float r, float g, float b, float alpha, int light){
+    private static void renderQuadsBlock(org.joml.Matrix4f matrix, VertexConsumer vertexBuilder, TextureAtlasSprite sprite, float r, float g, float b, float alpha, int light){
         float height = (MIN_Y + (MAX_Y - MIN_Y)) * 0.8f;
         float minU = sprite.getU(CORNERS * 16);
         float maxU = sprite.getU((1 - CORNERS) * 16);
@@ -417,8 +417,8 @@ public class MixingCauldronRenderer implements BlockEntityRenderer<MixingCauldro
     // THIS IS WHAT I WAS LOOKING FOR FOREVER AHHHHH
     private void renderItem(ItemStack stack, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn,
                             int combinedLightIn) {
-        Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemTransforms.TransformType.FIXED, combinedLightIn,
-                OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn, 1);
+        Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemDisplayContext.FIXED, combinedLightIn,
+                OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn,Minecraft.getInstance().level, 1);
     }
 
     private void renderBlock(PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, BlockState state) {
@@ -447,7 +447,7 @@ public class MixingCauldronRenderer implements BlockEntityRenderer<MixingCauldro
                 }
                 case ENTITYBLOCK_ANIMATED -> {
                     ItemStack stack = new ItemStack(p_110913_.getBlock());
-                    net.minecraftforge.client.extensions.common.IClientItemExtensions.of(stack).getCustomRenderer().renderByItem(stack, ItemTransforms.TransformType.NONE, p_110914_, p_110915_, p_110916_, p_110917_);
+                    net.minecraftforge.client.extensions.common.IClientItemExtensions.of(stack).getCustomRenderer().renderByItem(stack, ItemDisplayContext.NONE, p_110914_, p_110915_, p_110916_, p_110917_);
                 }
             }
 

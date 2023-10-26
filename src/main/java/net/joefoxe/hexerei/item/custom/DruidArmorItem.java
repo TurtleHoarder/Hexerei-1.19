@@ -16,7 +16,7 @@ import java.util.List;
 
 public class DruidArmorItem extends ArmorItem {
 
-    public DruidArmorItem(ArmorMaterial materialIn, EquipmentSlot slot, Properties builder) {
+    public DruidArmorItem(ArmorMaterial materialIn, ArmorItem.Type slot, Properties builder) {
         super(materialIn, slot, builder);
     }
 

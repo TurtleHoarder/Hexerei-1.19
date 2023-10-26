@@ -34,10 +34,10 @@ public class ArmorModels {
     public static ArmorModel get(ItemStack stack) {
         Item item = stack.getItem();
         if (item instanceof MushroomWitchArmorItem armor) {
-            return mushroomWitchArmor.get(armor.getSlot());
+            return mushroomWitchArmor.get(armor.getEquipmentSlot());
         }
         else if (item instanceof WitchArmorItem armor) {
-            return witchArmor.get(armor.getSlot());
+            return witchArmor.get(armor.getEquipmentSlot());
         }
         return null;
     }

@@ -3,8 +3,7 @@ package net.joefoxe.hexerei.client.renderer;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
+import net.joefoxe.hexerei.util.legacymath.*;
 import net.joefoxe.hexerei.Hexerei;
 import net.joefoxe.hexerei.client.renderer.entity.custom.CrowEntity;
 import net.joefoxe.hexerei.events.CrowWhitelistEvent;
@@ -126,7 +125,7 @@ public class CrowPerchRenderer {
     private static void renderPillar(MultiBufferSource.BufferSource buffer, PoseStack matrixStack, float xOffset, float yOffset, float zOffset){
         VertexConsumer faceBuilder = buffer.getBuffer(ModRenderTypes.BLOCK_HILIGHT_FACE);
 //        VertexConsumer faceBuilder = buffer.getBuffer(ModRenderTypes.BLOCK_HILIGHT_FACE);
-        Matrix4f posMat = matrixStack.last().pose();
+        org.joml.Matrix4f posMat = matrixStack.last().pose();
         int color = 0x110511;
         int r = (color & 0xFF0000) >> 16;
         int g = (color & 0xFF00) >> 8;
@@ -170,7 +169,7 @@ public class CrowPerchRenderer {
     private static void renderHorizontalPillar(MultiBufferSource.BufferSource buffer, PoseStack matrixStack, float xOffset, float yOffset, float zOffset){
 //        VertexConsumer faceBuilder = buffer.getBuffer(ModRenderTypes.BLOCK_HILIGHT_FACE);
         VertexConsumer faceBuilder = buffer.getBuffer(ModRenderTypes.BLOCK_HILIGHT_FACE);
-        Matrix4f posMat = matrixStack.last().pose();
+        org.joml.Matrix4f posMat = matrixStack.last().pose();
         int color = 0x110511;
         int r = (color & 0xFF0000) >> 16;
         int g = (color & 0xFF00) >> 8;
@@ -213,7 +212,7 @@ public class CrowPerchRenderer {
 
     private static void renderHorizontalPillarTurned(MultiBufferSource.BufferSource buffer, PoseStack matrixStack, float xOffset, float yOffset, float zOffset){
         VertexConsumer faceBuilder = buffer.getBuffer(ModRenderTypes.BLOCK_HILIGHT_FACE);
-        Matrix4f posMat = matrixStack.last().pose();
+        org.joml.Matrix4f posMat = matrixStack.last().pose();
         int color = 0x110511;
         int r = (color & 0xFF0000) >> 16;
         int g = (color & 0xFF00) >> 8;
@@ -265,10 +264,10 @@ public class CrowPerchRenderer {
 
             int crowId = tag.getInt("ID");
 
-            if ((Hexerei.proxy.getPlayer().level).getEntity(crowId) instanceof CrowEntity crow && ((CrowEntity) (Hexerei.proxy.getPlayer().level).getEntity(crowId)).getPerchPos() != null) {
+            if ((Hexerei.proxy.getPlayer().level()).getEntity(crowId) instanceof CrowEntity crow && ((CrowEntity) (Hexerei.proxy.getPlayer().level()).getEntity(crowId)).getPerchPos() != null) {
 
                 pos = crow.getPerchPos();
-                double topOffset = Hexerei.proxy.getPlayer().level.getBlockState(pos).getBlock().getOcclusionShape(Hexerei.proxy.getPlayer().level.getBlockState(pos), Hexerei.proxy.getPlayer().level, pos).max(Direction.Axis.Y);
+                double topOffset = Hexerei.proxy.getPlayer().level().getBlockState(pos).getBlock().getOcclusionShape(Hexerei.proxy.getPlayer().level().getBlockState(pos), Hexerei.proxy.getPlayer().level(), pos).max(Direction.Axis.Y);
                 int amount;
                 if (!map.containsKey(pos)) {
                     amount = 1;
@@ -289,10 +288,10 @@ public class CrowPerchRenderer {
 
                 matrixStack.pushPose();
                 matrixStack.translate(vec3.x, vec3.y, vec3.z);
-                Matrix4f posMat = matrixStack.last().pose();
+                org.joml.Matrix4f posMat = matrixStack.last().pose();
                 int color = 0x3B143D;
                 if(crow.getDyeColorId() != -1)
-                    color = crow.getDyeColor().getMaterialColor().col;
+                    color = crow.getDyeColor().getMapColor().col;
 
                 int r = (color & 0xFF0000) >> 16;
                 int g = (color & 0xFF00) >> 8;
@@ -373,7 +372,7 @@ public class CrowPerchRenderer {
 
             int crowId = tag.getInt("ID");
 
-            if ((Hexerei.proxy.getPlayer().level).getEntity(crowId) instanceof CrowEntity crow) {
+            if ((Hexerei.proxy.getPlayer().level()).getEntity(crowId) instanceof CrowEntity crow) {
 
                 pos = crow.position();
 //                double topOffset = Hexerei.proxy.getPlayer().level.getBlockState(pos).getBlock().getOcclusionShape(Hexerei.proxy.getPlayer().level.getBlockState(pos), Hexerei.proxy.getPlayer().level, pos).max(Direction.Axis.Y);
@@ -396,7 +395,7 @@ public class CrowPerchRenderer {
 
                 matrixStack.pushPose();
                 matrixStack.translate(pos.x, pos.y + 0.45f, pos.z);
-                Matrix4f posMat = matrixStack.last().pose();
+                org.joml.Matrix4f posMat = matrixStack.last().pose();
                 int color = 0x3B143D;
 
                 if(crow.getCommand() == 0)
@@ -417,7 +416,7 @@ public class CrowPerchRenderer {
                 }
 
                 if(crow.getDyeColorId() != -1)
-                    color = crow.getDyeColor().getMaterialColor().col;
+                    color = crow.getDyeColor().getMapColor().col;
 
                 int r = (color & 0xFF0000) >> 16;
                 int g = (color & 0xFF00) >> 8;
@@ -478,7 +477,7 @@ public class CrowPerchRenderer {
 
         matrixStack.pushPose();
         matrixStack.translate(pos.x, pos.y + 0.45f, pos.z);
-        Matrix4f posMat = matrixStack.last().pose();
+        org.joml.Matrix4f posMat = matrixStack.last().pose();
         int color = 0xE2E2E2;
 
         int r = (color & 0xFF0000) >> 16;

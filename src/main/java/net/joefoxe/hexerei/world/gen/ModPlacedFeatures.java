@@ -10,15 +10,16 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.placement.*;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.List;
 
 public class ModPlacedFeatures {
     public static final DeferredRegister<PlacedFeature> PLACED_FEATURES =
-            DeferredRegister.create(Registry.PLACED_FEATURE_REGISTRY, Hexerei.MOD_ID);
+            DeferredRegister.create(ForgeRegistries.FOLIAGE_PLACER_TYPES.getRegistryName(), Hexerei.MOD_ID);
 
-
+/*
     public static final RegistryObject<PlacedFeature> WILLOW_PLACED = PLACED_FEATURES.register("willow_placed",
             () -> new PlacedFeature((Holder<ConfiguredFeature<?,?>>)(Holder<? extends ConfiguredFeature<?,?>>)
                     ModConfiguredFeatures.WILLOW_SPAWN, VegetationPlacements.treePlacement(
@@ -50,7 +51,7 @@ public class ModPlacedFeatures {
     public static final RegistryObject<PlacedFeature> SELENITE_GEODE_PLACED_JUNGLE = PLACED_FEATURES.register("selenite_geode_placed_jungle",
             () -> new PlacedFeature((Holder<ConfiguredFeature<?,?>>)(Holder<? extends ConfiguredFeature<?,?>>)
                     ModConfiguredFeatures.SELENITE_GEODE, List.of(RarityFilter.onAverageOnceEvery(24), InSquarePlacement.spread(), HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(6), VerticalAnchor.absolute(30)), BiomeFilter.biome())));
-
+ */
     public static void register(IEventBus eventBus) {
         PLACED_FEATURES.register(eventBus);
     }

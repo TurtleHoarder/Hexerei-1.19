@@ -4,13 +4,12 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
+import net.joefoxe.hexerei.util.legacymath.*;
 import net.joefoxe.hexerei.Hexerei;
 import net.joefoxe.hexerei.block.custom.PickableDoubleFlower;
 import net.joefoxe.hexerei.events.CrowWhitelistEvent;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -24,6 +23,7 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
@@ -42,15 +42,15 @@ public class CrowWhitelistRenderer implements IGuiOverlay {
     private static final ResourceLocation GUI = new ResourceLocation(Hexerei.MOD_ID,
             "textures/gui/crow_gui.png");
     @Override
-    public void render(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+    public void render(ForgeGui gui, GuiGraphics g, float partialTick, int screenWidth, int screenHeight) {
         if(CrowWhitelistEvent.whiteListingCrow != null) {
             gui.setupOverlayRenderState(true, false);
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             RenderSystem.setShaderTexture(0, GUI);
-            GuiComponent.blit(poseStack, screenWidth / 2 - 9, screenHeight - 42, 238, 178, 18, 18, 256, 256);
+            g.blit(GUI, screenWidth / 2 - 9, screenHeight - 42, 238, 178, 18, 18, 256, 256);
 
-            InventoryScreen.renderEntityInInventory(screenWidth / 2, screenHeight - 78, 40, 35, -15, CrowWhitelistEvent.whiteListingCrow);
+            // TODO proper GUI: InventoryScreen.renderEntityInInventory(screenWidth / 2, screenHeight - 78, 40, 35, -15, CrowWhitelistEvent.whiteListingCrow);
 
             if(!CrowWhitelistEvent.whiteListingCrow.harvestWhitelist.isEmpty()){
                 ItemRenderer renderer = Minecraft.getInstance().getItemRenderer();
@@ -58,17 +58,18 @@ public class CrowWhitelistRenderer implements IGuiOverlay {
                 RenderSystem.enableBlend();
                 RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+                PoseStack poseStack = g.pose();
                 poseStack.pushPose();
-                poseStack.translate(screenWidth / 2f - 14 - ((CrowWhitelistEvent.whiteListingCrow.harvestWhitelist.size() - 1) / 2f * 21), screenHeight - 40, 100.0F + renderer.blitOffset);
+                poseStack.translate(screenWidth / 2f - 14 - ((CrowWhitelistEvent.whiteListingCrow.harvestWhitelist.size() - 1) / 2f * 21), screenHeight - 40, 100.0F);
                 poseStack.translate(8.0F, -8.0F, 0.0F);
                 poseStack.scale(12.0F, 12.0F, 12.0F);
-                poseStack.mulPoseMatrix(Matrix4f.createScaleMatrix(1, -1, 1));
+                poseStack.mulPoseMatrix(Matrix4f.createScaleMatrix(1, -1, 1).toJomlMatrix());
                 Vec3 rotationOffset = new Vec3(0.5f, 0, 0.5f);
 
                 MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
 
                 Lighting.setupFor3DItems();
-                poseStack.last().normal().mul(Vector3f.YP.rotationDegrees((float) -90));
+                poseStack.last().normal().mul(Vector3f.YP.rotationDegreesNormal((float) -90).toMatrix3F());
                 for(int itor = 0; itor < CrowWhitelistEvent.whiteListingCrow.harvestWhitelist.size(); itor++){
                     poseStack.pushPose();
                     poseStack.translate(itor * 1.7f, Math.sin((Hexerei.getClientTicks() + itor * 30) / 30) / 4, 0.0F);
@@ -137,7 +138,7 @@ public class CrowWhitelistRenderer implements IGuiOverlay {
                 case ENTITYBLOCK_ANIMATED -> {
                     ItemStack stack = new ItemStack(p_110913_.getBlock());
                     poseStack.translate(0.2, -0.1, -0.1);
-                    IClientItemExtensions.of(stack.getItem()).getCustomRenderer().renderByItem(stack, ItemTransforms.TransformType.NONE, poseStack, p_110915_, p_110916_, p_110917_);
+                    IClientItemExtensions.of(stack.getItem()).getCustomRenderer().renderByItem(stack, ItemDisplayContext.NONE, poseStack, p_110915_, p_110916_, p_110917_);
                 }
             }
 

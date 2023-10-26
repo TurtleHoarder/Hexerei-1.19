@@ -4,8 +4,9 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.datafixers.util.Pair;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import net.minecraft.world.phys.Vec3;
+import org.joml.Quaternionf;
+import net.joefoxe.hexerei.util.legacymath.*;
 import net.joefoxe.hexerei.Hexerei;
 import net.joefoxe.hexerei.client.renderer.entity.custom.ModChestBoatEntity;
 import net.minecraft.client.model.BoatModel;
@@ -47,12 +48,13 @@ public class ModChestBoatRenderer extends EntityRenderer<ModChestBoatEntity> {
         ModelLayerLocation modellayerlocation = p_234571_
                 ? new ModelLayerLocation(new ResourceLocation("hexerei", "chest_boat/" + p_234570_.getName()), "main")
                 : new ModelLayerLocation(new ResourceLocation("hexerei", "boat/" + p_234570_.getName()), "main");
-        return new BoatModel(p_234569_.bakeLayer(modellayerlocation), p_234571_);
+        return new BoatModel(p_234569_.bakeLayer(modellayerlocation));
     }
 
     @Override
     public void render(ModChestBoatEntity pEntity, float pEntityYaw, float pPartialTicks, PoseStack pMatrixStack, MultiBufferSource pBuffer, int pPackedLight) {
         pMatrixStack.pushPose();
+        Vec3 v;
         pMatrixStack.translate(0.0D, 0.375D, 0.0D);
         pMatrixStack.mulPose(Vector3f.YP.rotationDegrees(180.0F - pEntityYaw));
         float f = (float)pEntity.getHurtTime() - pPartialTicks;
@@ -67,7 +69,7 @@ public class ModChestBoatRenderer extends EntityRenderer<ModChestBoatEntity> {
 
         float f2 = pEntity.getBubbleAngle(pPartialTicks);
         if (!Mth.equal(f2, 0.0F)) {
-            pMatrixStack.mulPose(new Quaternion(new Vector3f(1.0F, 0.0F, 1.0F), pEntity.getBubbleAngle(pPartialTicks), true));
+            pMatrixStack.mulPose((new Quaternion((new Vector3f(1.0F, 0.0F, 1.0F)), pEntity.getBubbleAngle(pPartialTicks), true)).toQuatF());
         }
 
         Pair<ResourceLocation, BoatModel> pair = getModelWithLocation(pEntity);

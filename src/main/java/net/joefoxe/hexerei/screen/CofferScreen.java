@@ -7,6 +7,7 @@ import net.joefoxe.hexerei.Hexerei;
 import net.joefoxe.hexerei.block.ModBlocks;
 import net.joefoxe.hexerei.container.CofferContainer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
@@ -59,15 +60,15 @@ public class CofferScreen extends AbstractContainerScreen<CofferContainer> {
     }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(GuiGraphics g, int mouseX, int mouseY, float partialTicks) {
 
 
         this.mouseX = mouseX;
         this.mouseY = mouseY;
-        this.renderBackground(matrixStack);
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
-        this.renderTooltip(matrixStack, mouseX, mouseY);
-        this.renderButtonTooltip(matrixStack, mouseX, mouseY);
+        this.renderBackground(g);
+        super.render(g, mouseX, mouseY, partialTicks);
+        this.renderTooltip(g, mouseX, mouseY);
+        this.renderButtonTooltip(g, mouseX, mouseY);
     }
 
     @Override
@@ -76,21 +77,21 @@ public class CofferScreen extends AbstractContainerScreen<CofferContainer> {
     }
 
     @Override
-    protected void renderBg(PoseStack matrixStack, float partialTicks, int x, int y) {
+    protected void renderBg(GuiGraphics g, float partialTicks, int x, int y) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, GUI);
 
         int i = this.leftPos;
         int j = this.topPos - OFFSET;
-        this.blit(matrixStack, i, j - 3, 0, 0, 214, 157);
-        this.blit(matrixStack, i + 94, j - 30, 230, 0, 26, 26);
+        g.blit(GUI, i, j - 3, 0, 0, 214, 157);
+        g.blit(GUI, i + 94, j - 30, 230, 0, 26, 26);
         if(this.menu.getToggled() == 1)
         {
-            this.blit(matrixStack, i + 188, j + 130, 230, 44, 18, 18);
+            g.blit(GUI, i + 188, j + 130, 230, 44, 18, 18);
         }
         RenderSystem.setShaderTexture(0, INVENTORY);
-        this.blit(matrixStack, i + 3, j + 129, 0, 0, 176, 100);
+        g.blit(GUI, i + 3, j + 129, 0, 0, 176, 100);
 
         //Rendering the coffer item on the top of the screen
         Minecraft minecraft = Minecraft.getInstance();
@@ -100,12 +101,14 @@ public class CofferScreen extends AbstractContainerScreen<CofferContainer> {
         ItemRenderer itemRenderer = minecraft.getItemRenderer();
 
         RenderSystem.disableDepthTest();
-        itemRenderer.renderGuiItem(new ItemStack(ModBlocks.COFFER.get().asItem()),
+        g.renderItem(new ItemStack(ModBlocks.COFFER.get().asItem()), this.leftPos + 99, this.topPos - 25 - OFFSET);
+        /*itemRenderer.renderGuiItem(new ItemStack(ModBlocks.COFFER.get().asItem()),
                 this.leftPos + 99,
-                this.topPos - 25 - OFFSET);
+                this.topPos - 25 - OFFSET); */
 
-        if(this.minecraft.player != null)
-            InventoryScreen.renderEntityInInventory(this.leftPos + 107, this.topPos + 88 - OFFSET, 20, (float)(this.leftPos + 107 - x) , (float)(this.topPos + 88 - 30 - y - OFFSET), this.minecraft.player);
+        if(this.minecraft.player != null) {
+            // TODO proper inventory rendering: InventoryScreen.renderEntityInInventory(this.leftPos + 107, this.topPos + 88 - OFFSET, 20, (float) (this.leftPos + 107 - x), (float) (this.topPos + 88 - 30 - y - OFFSET), this.minecraft.player);
+        }
 
         RenderSystem.enableDepthTest();
 
@@ -130,7 +133,7 @@ public class CofferScreen extends AbstractContainerScreen<CofferContainer> {
         return mouseX >= this.leftPos + x && mouseX < this.leftPos + x + width && mouseY >= this.topPos + y && mouseY < this.topPos + y + height;
     }
 
-    public void renderButtonTooltip(PoseStack matrixStack, int mouseX, int mouseY){
+    public void renderButtonTooltip(GuiGraphics g, int mouseX, int mouseY){
         List<Component> components = new ArrayList<>();
         if (isHovering(mouseX, mouseY, 188D, 130 - OFFSET, 18D, 18D)) {
             components.add(Component.translatable("tooltip.hexerei.gather_to_here_button"));
@@ -144,7 +147,8 @@ public class CofferScreen extends AbstractContainerScreen<CofferContainer> {
             } else {
                 components.add(Component.translatable("[%s]", Component.translatable("tooltip.hexerei.shift").withStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xAAAA00)))).withStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x999999))));
             }
-            this.renderTooltip(matrixStack, components, Optional.empty(), mouseX, mouseY, Minecraft.getInstance().font, ItemStack.EMPTY);
+            g.renderTooltip(Minecraft.getInstance().font, components, Optional.empty(),mouseX, mouseY);
+            //this.renderTooltip(matrixStack, components, Optional.empty(), mouseX, mouseY, Minecraft.getInstance().font, ItemStack.EMPTY);
         }
     }
 }

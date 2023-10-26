@@ -2,7 +2,7 @@ package net.joefoxe.hexerei.tileentity.renderer;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import net.joefoxe.hexerei.util.legacymath.Vector3f;
 import net.joefoxe.hexerei.block.ModBlocks;
 import net.joefoxe.hexerei.block.custom.HerbJar;
 import net.joefoxe.hexerei.item.ModItems;
@@ -23,6 +23,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.RenderShape;
@@ -200,10 +201,10 @@ public class HerbJarRenderer implements BlockEntityRenderer<HerbJarTile> {
 
 
         int i = 0x464F56;
-        int j = (int)((double) NativeImage.getR(i) * 0.4D);
+       /* int j = (int)((double) NativeImage.getR(i) * 0.4D);
         int k = (int)((double)NativeImage.getG(i) * 0.4D);
-        int l = (int)((double)NativeImage.getB(i) * 0.4D);
-        int i1 = NativeImage.combine(   0, l, k, j);
+        int l = (int)((double)NativeImage.getB(i) * 0.4D); */
+        int i1 = 100;//NativeImage.combine(   0, l, k, j);
 
         if (tileEntityIn.getLevel().getBlockState(tileEntityIn.getBlockPos()).getValue(HorizontalDirectionalBlock.FACING) == Direction.NORTH) {
             matrixStackIn.translate(8D / 16D, 8D / 16D, 12.05D / 16D);
@@ -238,12 +239,12 @@ public class HerbJarRenderer implements BlockEntityRenderer<HerbJarTile> {
             float f3 = (float) (-Minecraft.getInstance().font.width(list.get(0)) / 2);
             if(tileEntityIn.dyeColor != 0x422F1E && tileEntityIn.dyeColor != 0)
                 matrixStackIn.translate(0, 5, 1);
-            Minecraft.getInstance().font.drawInBatch(list.get(0), f3, 0, i1, false, matrixStackIn.last().pose(), bufferIn, false, 0, combinedLightIn);
+            Minecraft.getInstance().font.drawInBatch(list.get(0), f3, 0, i1, false, matrixStackIn.last().pose(), bufferIn, Font.DisplayMode.NORMAL, 0, combinedLightIn);
 
             if (list.size() > 1) {
                 matrixStackIn.translate(0, 10, 0);
                 f3 = (float) (-Minecraft.getInstance().font.width(list.get(1)) / 2);
-                Minecraft.getInstance().font.drawInBatch(list.get(1), f3, 0, i1, false, matrixStackIn.last().pose(), bufferIn, false, 0, combinedLightIn);
+                Minecraft.getInstance().font.drawInBatch(list.get(1), f3, 0, i1, false, matrixStackIn.last().pose(), bufferIn, Font.DisplayMode.NORMAL, 0, combinedLightIn);
             }
         }
 
@@ -321,8 +322,8 @@ public class HerbJarRenderer implements BlockEntityRenderer<HerbJarTile> {
 
     private void renderItem(ItemStack stack, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn,
                             int combinedLightIn) {
-        Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemTransforms.TransformType.FIXED, combinedLightIn,
-                OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn, 1);
+        Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemDisplayContext.FIXED, combinedLightIn,
+                OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn, Minecraft.getInstance().level, 1);
     }
 
 
@@ -354,7 +355,7 @@ public class HerbJarRenderer implements BlockEntityRenderer<HerbJarTile> {
                 }
                 case ENTITYBLOCK_ANIMATED -> {
                     ItemStack stack = new ItemStack(p_110913_.getBlock());
-                    net.minecraftforge.client.extensions.common.IClientItemExtensions.of(stack).getCustomRenderer().renderByItem(stack, ItemTransforms.TransformType.NONE, p_110914_, p_110915_, p_110916_, p_110917_);
+                    net.minecraftforge.client.extensions.common.IClientItemExtensions.of(stack).getCustomRenderer().renderByItem(stack, ItemDisplayContext.NONE, p_110914_, p_110915_, p_110916_, p_110917_);
                 }
             }
 

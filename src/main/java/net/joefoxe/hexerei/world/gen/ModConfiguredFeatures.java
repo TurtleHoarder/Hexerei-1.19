@@ -1,11 +1,16 @@
 package net.joefoxe.hexerei.world.gen;
 
+import net.joefoxe.hexerei.Hexerei;
 import net.joefoxe.hexerei.block.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -31,8 +36,28 @@ import static net.joefoxe.hexerei.block.custom.PickableDoubleFlower.AGE;
 
 public class ModConfiguredFeatures {
 
+    public static ResourceKey SELENITE_GEODE_KEY = null;
 
-    public static final Holder<ConfiguredFeature<GeodeConfiguration, ?>> SELENITE_GEODE =
+    public static void bootstrap(BootstapContext<ConfiguredFeature<?, ?>> context) {
+        FeatureUtils.register(context,key("hexerei:selenite_geode"), Feature.GEODE,
+                new GeodeConfiguration(new GeodeBlockSettings(
+                        BlockStateProvider.simple(Blocks.AIR),
+                        BlockStateProvider.simple(ModBlocks.SELENITE_BLOCK.get()),
+                        BlockStateProvider.simple(ModBlocks.BUDDING_SELENITE.get()),
+                        BlockStateProvider.simple(Blocks.CALCITE),
+                        BlockStateProvider.simple(Blocks.SMOOTH_BASALT),
+                        List.of(ModBlocks.SMALL_SELENITE_BUD.get().defaultBlockState(),
+                                ModBlocks.MEDIUM_SELENITE_BUD.get().defaultBlockState(),
+                                ModBlocks.LARGE_SELENITE_BUD.get().defaultBlockState(),
+                                ModBlocks.SELENITE_CLUSTER.get().defaultBlockState()),
+                        BlockTags.FEATURES_CANNOT_REPLACE,
+                        BlockTags.GEODE_INVALID_BLOCKS),
+                        new GeodeLayerSettings(1.7D, 2.2D, 3.2D, 4.2D),
+                        new GeodeCrackSettings(0.95D, 2.0D, 2), 0.35D, 0.083D, true,
+                        UniformInt.of(4, 6), UniformInt.of(3, 4), UniformInt.of(1, 2),
+                        -16, 16, 0.05D, 1));
+    }
+   /* public static final Holder<ConfiguredFeature<GeodeConfiguration, ?>> SELENITE_GEODE =
             FeatureUtils.register("hexerei:selenite_geode", Feature.GEODE,
                     new GeodeConfiguration(new GeodeBlockSettings(
                             BlockStateProvider.simple(Blocks.AIR),
@@ -133,5 +158,10 @@ public class ModConfiguredFeatures {
 //            SurfaceWaterDepthFilter.forMaxDepth(2),
 //            PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, BiomeFilter.biome(),
 //            BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(Blocks.OAK_SAPLING.defaultBlockState(), BlockPos.ZERO)));
+ */
+
+    private static ResourceKey<ConfiguredFeature<?, ?>> key(final String name) {
+        return ResourceKey.create(Registries.CONFIGURED_FEATURE, new ResourceLocation(Hexerei.MOD_ID, name));
+    }
 
 }

@@ -8,12 +8,12 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.WaterlilyBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -48,6 +48,6 @@ public class FloweringLilyPadBlock extends WaterlilyBlock {
     protected boolean mayPlaceOn(BlockState state, BlockGetter worldIn, BlockPos pos) {
         FluidState fluidstate = worldIn.getFluidState(pos);
         FluidState fluidstate1 = worldIn.getFluidState(pos.above());
-        return (fluidstate.getType() == Fluids.WATER || state.getMaterial() == Material.ICE) && fluidstate1.getType() == Fluids.EMPTY;
+        return (fluidstate.getType() == Fluids.WATER || state.is(Blocks.ICE)) && fluidstate1.getType() == Fluids.EMPTY;
     }
 }

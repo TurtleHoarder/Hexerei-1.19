@@ -8,6 +8,7 @@ import net.joefoxe.hexerei.client.renderer.entity.custom.BroomEntity;
 import net.joefoxe.hexerei.container.BroomContainer;
 import net.joefoxe.hexerei.util.HexereiTags;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -64,13 +65,13 @@ public class BroomScreen extends AbstractContainerScreen<BroomContainer> {
     }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(GuiGraphics g, int mouseX, int mouseY, float partialTicks) {
 
 
-        this.renderBackground(matrixStack);
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
-        this.renderTooltip(matrixStack, mouseX, mouseY);
-        this.renderButtonTooltip(matrixStack, mouseX, mouseY);
+        this.renderBackground(g);
+        super.render(g, mouseX, mouseY, partialTicks);
+        this.renderTooltip(g, mouseX, mouseY);
+        this.renderButtonTooltip(g, mouseX, mouseY);
     }
 
     @Override
@@ -83,7 +84,7 @@ public class BroomScreen extends AbstractContainerScreen<BroomContainer> {
     }
 
 
-    public void renderButtonTooltip(PoseStack matrixStack, int mouseX, int mouseY) {
+    public void renderButtonTooltip(GuiGraphics g, int mouseX, int mouseY) {
 
         int offset = 0;
         if (broomEntity.getModule(BroomEntity.BroomSlot.SATCHEL).is(HexereiTags.Items.SMALL_SATCHELS))
@@ -113,7 +114,8 @@ public class BroomScreen extends AbstractContainerScreen<BroomContainer> {
         List<Component> components = new ArrayList<>();
         if (isHovering(mouseX, mouseY, 188.25D, 89 + offset - OFFSET, 18D, 18D)) {
             components.add(Component.translatable("tooltip.hexerei.broom_settings"));
-            this.renderTooltip(matrixStack, components, Optional.empty(), mouseX, mouseY, Minecraft.getInstance().font, ItemStack.EMPTY);
+            g.renderTooltip(Minecraft.getInstance().font, components, Optional.empty(), mouseX, mouseY);
+            //this.renderTooltip(g, components, Optional.empty(), mouseX, mouseY, Minecraft.getInstance().font, ItemStack.EMPTY);
         } else if (dropdownOffset > 29) {
             if (isHovering(mouseX, mouseY, 188.25D, 88 + offset + ((int) dropdownOffset) - OFFSET, 18D, 18D)) {
                 components.add(Component.translatable("tooltip.hexerei.broom_float_mode_off"));
@@ -123,7 +125,7 @@ public class BroomScreen extends AbstractContainerScreen<BroomContainer> {
                 } else {
                     components.add(Component.translatable("[%s]", Component.translatable("tooltip.hexerei.shift").withStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xAAAA00)))).withStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x999999))));
                 }
-                this.renderTooltip(matrixStack, components, Optional.empty(), mouseX, mouseY, Minecraft.getInstance().font, ItemStack.EMPTY);
+                g.renderTooltip(Minecraft.getInstance().font, components, Optional.empty(), mouseX, mouseY);
             }
 
             if (isHovering(mouseX, mouseY, 188.25D, 60 + offset + ((int) dropdownOffset) - OFFSET, 18D, 18D)) {
@@ -135,7 +137,7 @@ public class BroomScreen extends AbstractContainerScreen<BroomContainer> {
                 } else {
                     components.add(Component.translatable("[%s]", Component.translatable("tooltip.hexerei.shift").withStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xAAAA00)))).withStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x999999))));
                 }
-                this.renderTooltip(matrixStack, components, Optional.empty(), mouseX, mouseY, Minecraft.getInstance().font, ItemStack.EMPTY);
+                g.renderTooltip(Minecraft.getInstance().font, components, Optional.empty(), mouseX, mouseY);
             }
         }
 
@@ -143,7 +145,7 @@ public class BroomScreen extends AbstractContainerScreen<BroomContainer> {
     }
 
     @Override
-    protected void renderBg(PoseStack matrixStack, float partialTicks, int x, int y) {
+    protected void renderBg(GuiGraphics g, float partialTicks, int x, int y) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, GUI);
@@ -160,63 +162,63 @@ public class BroomScreen extends AbstractContainerScreen<BroomContainer> {
             offset = 63;
         inventoryLabelY = 94 + offset - OFFSET;
 
-        this.blit(matrixStack, i + 184, j + 55 + offset + ((int) dropdownOffset) - OFFSET, 230, 164, 26, 58);
+        g.blit(GUI, i + 184, j + 55 + offset + ((int) dropdownOffset) - OFFSET, 230, 164, 26, 58);
         if (this.menu.getFloatMode()) {
-            this.blit(matrixStack, i + 188, j + 60 + offset + ((int) dropdownOffset) - OFFSET, 238, 106, 18, 18);
+            g.blit(GUI, i + 188, j + 60 + offset + ((int) dropdownOffset) - OFFSET, 238, 106, 18, 18);
         } else {
-            this.blit(matrixStack, i + 188, j + 88 + offset + ((int) dropdownOffset) - OFFSET, 238, 70, 18, 18);
+            g.blit(GUI, i + 188, j + 88 + offset + ((int) dropdownOffset) - OFFSET, 238, 70, 18, 18);
         }
 
-        this.blit(matrixStack, i, j - 3 - OFFSET, 0, 0, 214, 82);
-        this.blit(matrixStack, i, j + 79 + offset - OFFSET, 0, 82, 214, 34);
+        g.blit(GUI, i, j - 3 - OFFSET, 0, 0, 214, 82);
+        g.blit(GUI, i, j + 79 + offset - OFFSET, 0, 82, 214, 34);
 
 
         if (!broomEntity.getModule(BroomEntity.BroomSlot.MISC).isEmpty())
-            this.blit(matrixStack, i + 37, j + 47 - OFFSET, 235, 31, 16, 16);
+            g.blit(GUI, i + 37, j + 47 - OFFSET, 235, 31, 16, 16);
         if (!broomEntity.getModule(BroomEntity.BroomSlot.SATCHEL).isEmpty())
-            this.blit(matrixStack, i + 99, j + 47 - OFFSET, 235, 31, 16, 16);
+            g.blit(GUI, i + 99, j + 47 - OFFSET, 235, 31, 16, 16);
         if (!broomEntity.getModule(BroomEntity.BroomSlot.BRUSH).isEmpty())
-            this.blit(matrixStack, i + 160, j + 47 - OFFSET, 235, 31, 16, 16);
+            g.blit(GUI, i + 160, j + 47 - OFFSET, 235, 31, 16, 16);
 
         if (!broomEntity.isEnder()) {
             ItemStack satchel = broomEntity.getModule(BroomEntity.BroomSlot.SATCHEL);
             if (satchel.is(HexereiTags.Items.SMALL_SATCHELS)) {
-                this.blit(matrixStack, i, j + 79 - OFFSET, 0, 116, 214, 21);
+                g.blit(GUI, i, j + 79 - OFFSET, 0, 116, 214, 21);
             }
 
             if (satchel.is(HexereiTags.Items.MEDIUM_SATCHELS)) {
-                this.blit(matrixStack, i, j + 79 - OFFSET, 0, 116, 214, 21);
-                this.blit(matrixStack, i, j + 79 + 21 - OFFSET, 0, 116, 214, 21);
+                g.blit(GUI, i, j + 79 - OFFSET, 0, 116, 214, 21);
+                g.blit(GUI, i, j + 79 + 21 - OFFSET, 0, 116, 214, 21);
             }
 
             if (satchel.is(HexereiTags.Items.LARGE_SATCHELS)) {
-                this.blit(matrixStack, i, j + 79 - OFFSET, 0, 116, 214, 21);
-                this.blit(matrixStack, i, j + 79 + 21 - OFFSET, 0, 116, 214, 21);
-                this.blit(matrixStack, i, j + 79 + 42 - OFFSET, 0, 116, 214, 21);
+                g.blit(GUI, i, j + 79 - OFFSET, 0, 116, 214, 21);
+                g.blit(GUI, i, j + 79 + 21 - OFFSET, 0, 116, 214, 21);
+                g.blit(GUI, i, j + 79 + 42 - OFFSET, 0, 116, 214, 21);
             }
         } else {
 
-            this.blit(matrixStack, i, j + 79 - OFFSET, 0, 200, 214, 21);
-            this.blit(matrixStack, i, j + 79 + 21 - OFFSET, 0, 200, 214, 21);
-            this.blit(matrixStack, i, j + 79 + 42 - OFFSET, 0, 200, 214, 21);
-            this.blit(matrixStack, i, j + 79 + 42 - OFFSET + 21, 0, 221, 214, 5);
-            this.blit(matrixStack, i, j + 75 - OFFSET, 0, 137, 214, 72);
+            g.blit(GUI, i, j + 79 - OFFSET, 0, 200, 214, 21);
+            g.blit(GUI, i, j + 79 + 21 - OFFSET, 0, 200, 214, 21);
+            g.blit(GUI, i, j + 79 + 42 - OFFSET, 0, 200, 214, 21);
+            g.blit(GUI, i, j + 79 + 42 - OFFSET + 21, 0, 221, 214, 5);
+            g.blit(GUI, i, j + 75 - OFFSET, 0, 137, 214, 72);
         }
 
 
-        this.blit(matrixStack, i + 94, j - 30 - OFFSET, 230, 0, 26, 26);
+        g.blit(GUI, i + 94, j - 30 - OFFSET, 230, 0, 26, 26);
 
         if (this.dropdownClicked)
-            this.blit(matrixStack, i + 188, j + 89 + offset - OFFSET, 238, 124, 18, 18);
+            g.blit(GUI, i + 188, j + 89 + offset - OFFSET, 238, 124, 18, 18);
 
         RenderSystem.setShaderTexture(0, INVENTORY);
-        this.blit(matrixStack, i + 3, j + 88 + offset - OFFSET, 0, 0, 176, 100);
+        g.blit(GUI, i + 3, j + 88 + offset - OFFSET, 0, 0, 176, 100);
 
         RenderSystem.setShaderTexture(0, GUI);
         int extraBrush = broomEntity.getExtraBrush();
         if (broomEntity.isReplacer() && extraBrush != -1) {
 
-            this.blit(matrixStack, i + 12 + 21 * ((extraBrush - 3) % 9), j + 21 * ((extraBrush - 3) / 9) + 79 - OFFSET, 234, 142, 22, 22);
+            g.blit(GUI, i + 12 + 21 * ((extraBrush - 3) % 9), j + 21 * ((extraBrush - 3) / 9) + 79 - OFFSET, 234, 142, 22, 22);
         }
 
 
@@ -228,7 +230,7 @@ public class BroomScreen extends AbstractContainerScreen<BroomContainer> {
 
 
         RenderSystem.disableDepthTest();
-        itemRenderer.renderGuiItem(broomEntity.getPickResult(),
+        g.renderItem(broomEntity.getPickResult(),
                 this.leftPos + 99,
                 this.topPos - 25 - OFFSET);
 
@@ -237,9 +239,13 @@ public class BroomScreen extends AbstractContainerScreen<BroomContainer> {
         MutableComponent satchel = Component.translatable("tooltip.hexerei.broom_satchel");
         MutableComponent brush = Component.translatable("tooltip.hexerei.broom_brush");
 
-        minecraft.font.draw(matrixStack, misc, this.leftPos + 34, this.topPos + 29 - OFFSET, 0xFF606060);
+        g.renderTooltip(Minecraft.getInstance().font, misc, this.leftPos + 34, this.topPos + 29 - OFFSET);
+        g.renderTooltip(Minecraft.getInstance().font, satchel, this.leftPos + 34, this.topPos + 29 - OFFSET);
+        g.renderTooltip(Minecraft.getInstance().font, brush, this.leftPos + 34, this.topPos + 29 - OFFSET);
+
+        /*minecraft.font.draw(matrixStack, misc, this.leftPos + 34, this.topPos + 29 - OFFSET, 0xFF606060);
         minecraft.font.draw(matrixStack, satchel, this.leftPos + 89, this.topPos + 29 - OFFSET, 0xFF606060);
-        minecraft.font.draw(matrixStack, brush, this.leftPos + 154, this.topPos + 29 - OFFSET, 0xFF606060);
+        minecraft.font.draw(matrixStack, brush, this.leftPos + 154, this.topPos + 29 - OFFSET, 0xFF606060); */
 //        InventoryScreen.renderEntityInInventory(this.leftPos + 107, this.topPos + 88, 20, (float)(this.leftPos + 107 - x) , (float)(this.topPos + 88 - 30 - y), (LivingEntity) broomEntity);
 //
 //        RenderSystem.enableDepthTest();

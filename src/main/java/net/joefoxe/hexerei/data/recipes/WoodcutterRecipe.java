@@ -13,6 +13,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleItemRecipe;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class WoodcutterRecipe extends SingleItemRecipe {
 
@@ -66,7 +67,8 @@ public class WoodcutterRecipe extends SingleItemRecipe {
 
             String result = GsonHelper.getAsString(pJson, "result");
             int count = GsonHelper.getAsInt(pJson, "count", 1);
-            ItemStack itemstack = new ItemStack(Registry.ITEM.get(new ResourceLocation(result)), count);
+            // TODO fix woodcutter new ItemStack(Registry.ITEM.get(new ResourceLocation(result)), count);
+            ItemStack itemstack = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(result)), count);
             return new WoodcutterRecipe(pRecipeId, group, ingredient, itemstack, ingredient_count);
         }
 

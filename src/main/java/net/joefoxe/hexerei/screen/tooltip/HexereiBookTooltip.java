@@ -1,7 +1,7 @@
 package net.joefoxe.hexerei.screen.tooltip;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Matrix4f;
+import net.joefoxe.hexerei.util.legacymath.Matrix4f;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -12,6 +12,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public interface HexereiBookTooltip extends ClientTooltipComponent {
 
+
+    @OnlyIn(Dist.CLIENT)
+    void renderText(Font p_169953_, int mouseX, int mouseY, Matrix4f lastpose, MultiBufferSource.BufferSource buffer);
 
     @OnlyIn(Dist.CLIENT)
     default void renderText(Font p_169953_, int xIn, int yIn, Matrix4f matrix4f, MultiBufferSource.BufferSource buffer, int combinedOverlayIn, int combinedLightIn) {

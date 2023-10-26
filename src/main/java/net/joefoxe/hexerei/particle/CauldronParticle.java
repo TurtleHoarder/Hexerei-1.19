@@ -87,7 +87,7 @@ public class CauldronParticle extends TextureSheetParticle {
     private static final ParticleRenderType renderType = new ParticleRenderType() {
         @Override
         public void begin(BufferBuilder bufferBuilder, TextureManager textureManager) {
-            RenderSystem.disableTexture();
+            // TODO find equivalent: RenderSystem.disableTexture();
 
             RenderSystem.depthMask(false);
             RenderSystem.enableBlend();
@@ -226,14 +226,14 @@ public class CauldronParticle extends TextureSheetParticle {
             MixingCauldronTile mixingCauldronTile = null;
             FluidStack fluidStack = FluidStack.EMPTY;
 
-            if(worldIn.getBlockEntity(new BlockPos(x, y-0.1, z)) instanceof MixingCauldronTile) {
-                mixingCauldronTile = (MixingCauldronTile) worldIn.getBlockEntity(new BlockPos(x, y - 0.1, z));
+            if(worldIn.getBlockEntity(new BlockPos((int)x, (int)(y-0.1), (int)z)) instanceof MixingCauldronTile) {
+                mixingCauldronTile = (MixingCauldronTile) worldIn.getBlockEntity(new BlockPos((int)x, (int)(y - 0.1), (int)z));
                 fluidStack = mixingCauldronTile.getFluidStack();
             }
 
-            Color color = new Color(BiomeColors.getAverageWaterColor(worldIn, new BlockPos(x, y, z)));
+            Color color = new Color(BiomeColors.getAverageWaterColor(worldIn, new BlockPos((int)x, (int)y, (int)z)));
 
-            BlockState blockStateAtPos = worldIn.getBlockState(new BlockPos(x, y-0.1, z));
+            BlockState blockStateAtPos = worldIn.getBlockState(new BlockPos((int)x, (int)(y-0.1), (int)z));
 
             TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(IClientFluidTypeExtensions.of(fluidStack.getFluid()).getStillTexture(fluidStack));
 

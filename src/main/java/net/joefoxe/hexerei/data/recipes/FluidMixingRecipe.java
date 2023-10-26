@@ -9,6 +9,7 @@ import net.joefoxe.hexerei.Hexerei;
 import net.joefoxe.hexerei.block.ModBlocks;
 import net.joefoxe.hexerei.fluid.FluidIngredient;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.TagParser;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -143,14 +144,13 @@ public class FluidMixingRecipe implements Recipe<SimpleContainer> {
     }
 
     @Override
-    public NonNullList<Ingredient> getIngredients() {
-        return recipeItems;
+    public ItemStack assemble(SimpleContainer pContainer, RegistryAccess pRegistryAccess) {
+        return ItemStack.EMPTY;
     }
 
-
     @Override
-    public ItemStack assemble(SimpleContainer p_44001_) {
-        return ItemStack.EMPTY;
+    public NonNullList<Ingredient> getIngredients() {
+        return recipeItems;
     }
 
     @Override
@@ -159,8 +159,7 @@ public class FluidMixingRecipe implements Recipe<SimpleContainer> {
     }
 
     @Override
-    public ItemStack getResultItem() {
-
+    public ItemStack getResultItem(RegistryAccess pRegistryAccess) {
         return ItemStack.EMPTY;
     }
 

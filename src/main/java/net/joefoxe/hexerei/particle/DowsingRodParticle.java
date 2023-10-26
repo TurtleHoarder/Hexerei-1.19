@@ -76,7 +76,7 @@ public class DowsingRodParticle extends TextureSheetParticle {
     private static final ParticleRenderType renderType = new ParticleRenderType() {
         @Override
         public void begin(BufferBuilder bufferBuilder, TextureManager textureManager) {
-            RenderSystem.disableTexture();
+            //TODO FIND EQUIVALENTRenderSystem.disableTexture();
 
             RenderSystem.depthMask(false);
             RenderSystem.enableBlend();

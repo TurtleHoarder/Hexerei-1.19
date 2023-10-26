@@ -4,11 +4,12 @@ package net.joefoxe.hexerei.screen.renderer;
 import com.google.common.base.Preconditions;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
+import net.joefoxe.hexerei.util.legacymath.Matrix4f;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.ingredients.IIngredientRenderer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
@@ -73,36 +74,36 @@ public class FluidStackRenderer implements IIngredientRenderer<FluidStack> {
     }
 
     @Override
-    public void render(PoseStack poseStack, FluidStack fluidStack) {
+    public void render(GuiGraphics g, FluidStack fluidStack) {
         RenderSystem.enableBlend();
 
-        drawFluid(poseStack, width, height, fluidStack);
+        drawFluid(g, width, height, fluidStack);
 
         RenderSystem.setShaderColor(1, 1, 1, 1);
 
         if (overlay != null) {
-            poseStack.pushPose();
+            g.pose().pushPose();
             {
-                poseStack.translate(0, 0, 200);
-                overlay.draw(poseStack);
+                g.pose().translate(0, 0, 200);
+                overlay.draw(g);
             }
-            poseStack.popPose();
+            g.pose().popPose();
         }
         RenderSystem.disableBlend();
     }
 
-    public void render(PoseStack stack, int xPosition, int yPosition, @Nullable FluidStack ingredient) {
+    public void render(GuiGraphics g, int xPosition, int yPosition, @Nullable FluidStack ingredient) {
         if (ingredient != null) {
-            stack.pushPose();
+            g.pose().pushPose();
             {
-                stack.translate(xPosition, yPosition, 0);
-                render(stack, ingredient);
+                g.pose().translate(xPosition, yPosition, 0);
+                render(g, ingredient);
             }
-            stack.popPose();
+            g.pose().popPose();
         }
     }
 
-    private void drawFluid(PoseStack poseStack, final int width, final int height, FluidStack fluidStack) {
+    private void drawFluid(GuiGraphics g, final int width, final int height, FluidStack fluidStack) {
         Fluid fluid = fluidStack.getFluid();
         if (fluid == null) {
             return;
@@ -122,12 +123,12 @@ public class FluidStackRenderer implements IIngredientRenderer<FluidStack> {
             scaledAmount = height;
         }
 
-        drawTiledSprite(poseStack, width, height, fluidColor, scaledAmount, fluidStillSprite);
+        drawTiledSprite(g, width, height, fluidColor, scaledAmount, fluidStillSprite);
     }
 
-    private static void drawTiledSprite(PoseStack poseStack, final int tiledWidth, final int tiledHeight, int color, int scaledAmount, TextureAtlasSprite sprite) {
+    private static void drawTiledSprite(GuiGraphics g, final int tiledWidth, final int tiledHeight, int color, int scaledAmount, TextureAtlasSprite sprite) {
         RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
-        Matrix4f matrix = poseStack.last().pose();
+        org.joml.Matrix4f matrix = g.pose().last().pose();
         setGLColorFromInt(color);
 
         final int xTileCount = tiledWidth / TEXTURE_SIZE;
@@ -170,7 +171,7 @@ public class FluidStackRenderer implements IIngredientRenderer<FluidStack> {
         RenderSystem.setShaderColor(red, green, blue, alpha);
     }
 
-    private static void drawTextureWithMasking(Matrix4f matrix, float xCoord, float yCoord, TextureAtlasSprite textureSprite, int maskTop, int maskRight, float zLevel) {
+    private static void drawTextureWithMasking(org.joml.Matrix4f matrix, float xCoord, float yCoord, TextureAtlasSprite textureSprite, int maskTop, int maskRight, float zLevel) {
         float uMin = textureSprite.getU0();
         float uMax = textureSprite.getU1();
         float vMin = textureSprite.getV0();

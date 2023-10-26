@@ -2,8 +2,7 @@ package net.joefoxe.hexerei.tileentity.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
+import net.joefoxe.hexerei.util.legacymath.*;
 import net.joefoxe.hexerei.Hexerei;
 import net.joefoxe.hexerei.block.ModBlocks;
 import net.joefoxe.hexerei.block.custom.HerbJar;
@@ -25,6 +24,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
@@ -193,7 +193,7 @@ public class CrystalBallRenderer implements BlockEntityRenderer<CrystalBallTile>
         poseStack.pushPose();
         poseStack.translate(-0.5f, -0.5f, -0.5f);
 
-        Matrix4f matrix = poseStack.last().pose();
+        org.joml.Matrix4f matrix = poseStack.last().pose();
 //        DyeColor col = HexereiUtil.getDyeColorNamed("jeb_", 0); // for potential color changing if dyed?
         float f = 1;
         float f1 = 1;
@@ -235,8 +235,8 @@ public class CrystalBallRenderer implements BlockEntityRenderer<CrystalBallTile>
 
     private void renderItem(ItemStack stack, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn,
                             int combinedLightIn) {
-        Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemTransforms.TransformType.FIXED, combinedLightIn,
-                OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn, 1);
+        Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemDisplayContext.FIXED, combinedLightIn,
+                OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn,Minecraft.getInstance().level, 1);
     }
 
 
@@ -268,7 +268,7 @@ public class CrystalBallRenderer implements BlockEntityRenderer<CrystalBallTile>
                 }
                 case ENTITYBLOCK_ANIMATED -> {
                     ItemStack stack = new ItemStack(p_110913_.getBlock());
-                    net.minecraftforge.client.extensions.common.IClientItemExtensions.of(stack).getCustomRenderer().renderByItem(stack, ItemTransforms.TransformType.NONE, p_110914_, p_110915_, p_110916_, p_110917_);
+                    net.minecraftforge.client.extensions.common.IClientItemExtensions.of(stack).getCustomRenderer().renderByItem(stack, ItemDisplayContext.NONE, p_110914_, p_110915_, p_110916_, p_110917_);
                 }
             }
 
@@ -289,7 +289,7 @@ public class CrystalBallRenderer implements BlockEntityRenderer<CrystalBallTile>
                 }
                 case ENTITYBLOCK_ANIMATED -> {
                     ItemStack stack = new ItemStack(p_110913_.getBlock());
-                    IClientItemExtensions.of(stack.getItem()).getCustomRenderer().renderByItem(stack, ItemTransforms.TransformType.NONE, p_110914_, p_110915_, p_110916_, p_110917_);
+                    IClientItemExtensions.of(stack.getItem()).getCustomRenderer().renderByItem(stack, ItemDisplayContext.NONE, p_110914_, p_110915_, p_110916_, p_110917_);
                 }
             }
 
@@ -309,7 +309,7 @@ public class CrystalBallRenderer implements BlockEntityRenderer<CrystalBallTile>
                 case ENTITYBLOCK_ANIMATED -> {
                     ItemStack stack = new ItemStack(p_110913_.getBlock());
                     poseStack.translate(0.2, -0.1, -0.1);
-                    IClientItemExtensions.of(stack.getItem()).getCustomRenderer().renderByItem(stack, ItemTransforms.TransformType.NONE, poseStack, p_110915_, p_110916_, p_110917_);
+                    IClientItemExtensions.of(stack.getItem()).getCustomRenderer().renderByItem(stack, ItemDisplayContext.NONE, poseStack, p_110915_, p_110916_, p_110917_);
                 }
             }
 

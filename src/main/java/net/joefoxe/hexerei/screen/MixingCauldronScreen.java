@@ -7,17 +7,18 @@ import net.joefoxe.hexerei.block.ModBlocks;
 import net.joefoxe.hexerei.container.MixingCauldronContainer;
 import net.joefoxe.hexerei.fluid.PotionFluidHandler;
 import net.joefoxe.hexerei.integration.HexereiModNameTooltipCompat;
-import net.joefoxe.hexerei.integration.jei.HexereiJei;
 import net.joefoxe.hexerei.screen.renderer.FluidStackRenderer;
 import net.joefoxe.hexerei.tileentity.MixingCauldronTile;
 import net.joefoxe.hexerei.util.HexereiPacketHandler;
 import net.joefoxe.hexerei.util.HexereiUtil;
 import net.joefoxe.hexerei.util.message.DrainCauldronToServer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
@@ -64,7 +65,7 @@ public class MixingCauldronScreen extends AbstractContainerScreen<MixingCauldron
     }
 
     @Override
-    protected void renderBg(PoseStack matrixStack, float partialTicks, int pMouseX, int pMouseY) {
+    protected void renderBg(GuiGraphics g, float partialTicks, int pMouseX, int pMouseY) {
         Minecraft minecraft = Minecraft.getInstance();
         ItemRenderer itemRenderer = minecraft.getItemRenderer();
 
@@ -81,49 +82,49 @@ public class MixingCauldronScreen extends AbstractContainerScreen<MixingCauldron
         } else {
             dumpOffset = HexereiUtil.moveTo(dumpOffset, 0, Math.abs(2 * ((-1 - dumpOffset) / 31)));
         }
-
         Component component = Component.translatable("Dump");
         float width = font.width(component.getVisualOrderText());
-        this.blit(matrixStack, i + 20 - (int)dumpOffset, j + 56, 216, 61, 40, 32);
-        if(clickedDump)
-            this.blit(matrixStack, i + 20 - (int)dumpOffset + 9, j + 56 + 9, 226, 47, 30, 14);
+        //g.blit(matrixStack, i + 20 - (int)dumpOffset, j + 56, 216, 61, 40, 32);
+        //if(clickedDump)
+            //this.blit(matrixStack, i + 20 - (int)dumpOffset + 9, j + 56 + 9, 226, 47, 30, 14);
 
         float lineHeight = minecraft.font.lineHeight / 2f;
         if(width > 20){
             float percent = width/20;
-            matrixStack.pushPose();
-            matrixStack.scale(1/percent, 1/percent, 1/percent);
-            minecraft.font.draw(matrixStack, component, (i + 44.5f - ((width / percent) / 2f) - (int)dumpOffset) * percent + (clickedDump ? 1f : 0), (j + 68 + lineHeight) * percent - 4.5f + (clickedDump ? 1f : 0), 0xFF404040);
-            matrixStack.popPose();
+            g.pose().pushPose();
+            g.pose().scale(1/percent, 1/percent, 1/percent);
+            //minecraft.font.drawInBatch(matrixStack, component, (i + 44.5f - ((width / percent) / 2f) - (int)dumpOffset) * percent + (clickedDump ? 1f : 0), (j + 68 + lineHeight) * percent - 4.5f + (clickedDump ? 1f : 0), 0xFF404040);
+            g.pose().popPose();
         } else
-            minecraft.font.draw(matrixStack, component, i + 44.5f - (width / 2f) - (int)dumpOffset + (clickedDump ? 1f : 0), j + 68 + lineHeight - 4.5f + (clickedDump ? 1f : 0), 0xFF606060);
+            //minecraft.font.draw(matrixStack, component, i + 44.5f - (width / 2f) - (int)dumpOffset + (clickedDump ? 1f : 0), j + 68 + lineHeight - 4.5f + (clickedDump ? 1f : 0), 0xFF606060);
+
 
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, GUI);
-        this.blit(matrixStack, i, j, 0, 0, 207, 127);
-        this.blit(matrixStack, i + 150, j + 52, 220, 0, (int)(22 * this.menu.getCraftPercent()), 8);
-        this.blit(matrixStack, i + 109, j + 46, 242, 0, 8, (int)(22 * this.menu.getCraftPercent()));
+       // this.blit(matrixStack, i, j, 0, 0, 207, 127);
+        //this.blit(matrixStack, i + 150, j + 52, 220, 0, (int)(22 * this.menu.getCraftPercent()), 8);
+        //this.blit(matrixStack, i + 109, j + 46, 242, 0, 8, (int)(22 * this.menu.getCraftPercent()));
 
 
 
         RenderSystem.setShaderTexture(0, INVENTORY);
-        this.blit(matrixStack, i + 6, j + 102, 0, 0, 176, 100);
+        //this.blit(matrixStack, i + 6, j + 102, 0, 0, 176, 100);
         if(menu.getRenderedFluid() != null) {
             FluidStack stack = menu.getRenderedFluid().copy();
-            renderer.render(matrixStack, i + 42, j + 56, stack);
+            //renderer.render(matrixStack, i + 42, j + 56, stack);
         }
 
         RenderSystem.disableDepthTest();
-        itemRenderer.renderGuiItem(new ItemStack(ModBlocks.MIXING_CAULDRON.get().asItem()),
-                this.leftPos + 86,
-                this.topPos - 25);
+       // itemRenderer.renderGuiItem(new ItemStack(ModBlocks.MIXING_CAULDRON.get().asItem()),
+       //         this.leftPos + 86,
+       //         this.topPos - 25);
         RenderSystem.enableDepthTest();
         RenderSystem.setShaderTexture(0, GUI);
-        this.blit(matrixStack, i + 81, j - 30, 230, 21, 26, 26);
+        //this.blit(matrixStack, i + 81, j - 30, 230, 21, 26, 26);
 
-        this.blit(matrixStack, i + 42,j + 56, 208, 12, 16, 32);
+        //this.blit(matrixStack, i + 42,j + 56, 208, 12, 16, 32);
 
 
 
@@ -131,11 +132,11 @@ public class MixingCauldronScreen extends AbstractContainerScreen<MixingCauldron
     }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(GuiGraphics g, int mouseX, int mouseY, float partialTicks) {
 
-        this.renderBackground(matrixStack);
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
-        this.renderTooltip(matrixStack, mouseX, mouseY);
+        this.renderBackground(g);
+        super.render(g, mouseX, mouseY, partialTicks);
+        this.renderTooltip(g, mouseX, mouseY);
 
 
 
@@ -149,7 +150,8 @@ public class MixingCauldronScreen extends AbstractContainerScreen<MixingCauldron
 
 
             if(!fluidStack.isEmpty()){
-                String modId = Registry.FLUID.getKey(fluidStack.getFluid()).getNamespace();
+                //String modId = Registry.FLUID.getKey(fluidStack.getFluid()).getNamespace();
+                String modId = Registries.FLUID.registry().getNamespace();
                 String modName = HexereiUtil.getModNameForModId(modId);
                 MutableComponent modNameComponent = Component.translatable(modName);
                 modNameComponent.withStyle(Style.EMPTY.withItalic(true).withColor(5592575));
@@ -158,8 +160,7 @@ public class MixingCauldronScreen extends AbstractContainerScreen<MixingCauldron
             }
 
 
-            renderTooltip(matrixStack, tooltip,
-                    Optional.empty(), mouseX, mouseY);
+            renderTooltip(g, mouseX, mouseY);
         }
     }
 
@@ -181,10 +182,6 @@ public class MixingCauldronScreen extends AbstractContainerScreen<MixingCauldron
         int y = (height - imageHeight) / 2;
         if(isMouseAboveArea((int)pMouseX, (int)pMouseY, x, y, 42, 56)) {
 
-            if(button == 0)
-                HexereiJei.showRecipe(mixingCauldron.getFluidStack());
-            if(button == 1)
-                HexereiJei.showUses(mixingCauldron.getFluidStack());
         }
 
         if(isMouseOver(pMouseX, pMouseY, this.leftPos + 20 - (int)dumpOffset + 9, this.topPos + 56 + 9, 30, 14) && dumpOffset > 20){

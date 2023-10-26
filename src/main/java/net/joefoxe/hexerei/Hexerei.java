@@ -27,7 +27,6 @@ import net.joefoxe.hexerei.events.*;
 import net.joefoxe.hexerei.fluid.ModFluidTypes;
 import net.joefoxe.hexerei.fluid.ModFluids;
 import net.joefoxe.hexerei.integration.HexereiModNameTooltipCompat;
-import net.joefoxe.hexerei.integration.jei.HexereiJeiCompat;
 import net.joefoxe.hexerei.item.ModItems;
 import net.joefoxe.hexerei.light.LightManager;
 import net.joefoxe.hexerei.particle.ModParticleTypes;
@@ -53,6 +52,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.SpawnPlacements;
@@ -186,7 +186,6 @@ public class Hexerei {
 		ModEntityTypes.register(eventBus);
 		ModBiomeModifiers.register(eventBus);
 		ModBiomes.register(eventBus);
-		HexereiJeiCompat.init();
 		ModLootModifiers.init();
 		HexereiModNameTooltipCompat.init();
 
@@ -259,10 +258,10 @@ public class Hexerei {
 			BroomType.create("willow", ModItems.WILLOW_BROOM.get(), 0.4f);
 			BroomType.create("witch_hazel", ModItems.WITCH_HAZEL_BROOM.get(), 0.6f);
 
-			Registry.register(Registry.STRUCTURE_PROCESSOR, new ResourceLocation(MOD_ID, "witch_hut_leg_processor"), WITCH_HUT_LEG_PROCESSOR);
-			Registry.register(Registry.STRUCTURE_PROCESSOR, new ResourceLocation(MOD_ID, "dark_coven_leg_processor"), DARK_COVEN_LEG_PROCESSOR);
-			Registry.register(Registry.STRUCTURE_PROCESSOR, new ResourceLocation(MOD_ID, "nature_coven_leg_processor"), NATURE_COVEN_LEG_PROCESSOR);
-			Registry.register(Registry.STRUCTURE_PROCESSOR, new ResourceLocation(MOD_ID, "mangrove_tree_leg_processor"), MANGROVE_TREE_LEG_PROCESSOR);
+			Registry.register(BuiltInRegistries.STRUCTURE_PROCESSOR, new ResourceLocation(MOD_ID, "witch_hut_leg_processor"), WITCH_HUT_LEG_PROCESSOR);
+			Registry.register(BuiltInRegistries.STRUCTURE_PROCESSOR, new ResourceLocation(MOD_ID, "dark_coven_leg_processor"), DARK_COVEN_LEG_PROCESSOR);
+			Registry.register(BuiltInRegistries.STRUCTURE_PROCESSOR, new ResourceLocation(MOD_ID, "nature_coven_leg_processor"), NATURE_COVEN_LEG_PROCESSOR);
+			Registry.register(BuiltInRegistries.STRUCTURE_PROCESSOR, new ResourceLocation(MOD_ID, "mangrove_tree_leg_processor"), MANGROVE_TREE_LEG_PROCESSOR);
 
 			HexereiPacketHandler.register();
 

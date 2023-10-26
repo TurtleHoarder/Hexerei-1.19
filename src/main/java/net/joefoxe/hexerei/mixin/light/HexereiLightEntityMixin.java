@@ -184,7 +184,8 @@ public abstract class HexereiLightEntityMixin implements LambHexereiDynamicLight
                 LightManager.updateTrackedChunks(chunkPos, this.lambdynlights$trackedLitChunkPos, newPos);
 
                 var directionX = (this.blockPosition().getX() & 15) >= 8 ? Direction.EAST : Direction.WEST;
-                var directionY = (Mth.fastFloor(this.getEyeY()) & 15) >= 8 ? Direction.UP : Direction.DOWN;
+                // TODO: Make fastfloor
+                var directionY = (Mth.floor(this.getEyeY()) & 15) >= 8 ? Direction.UP : Direction.DOWN;
                 var directionZ = (this.blockPosition().getZ() & 15) >= 8 ? Direction.SOUTH : Direction.NORTH;
 
                 for (int i = 0; i < 7; i++) {

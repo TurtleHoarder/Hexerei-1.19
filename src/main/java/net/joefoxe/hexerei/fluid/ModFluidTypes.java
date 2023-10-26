@@ -2,7 +2,7 @@ package net.joefoxe.hexerei.fluid;
 
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.math.Vector3f;
+import org.joml.Vector3f;
 import net.joefoxe.hexerei.Hexerei;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -10,6 +10,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.common.SoundAction;
 import net.minecraftforge.eventbus.api.IEventBus;

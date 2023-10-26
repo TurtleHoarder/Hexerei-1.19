@@ -1,7 +1,7 @@
 package net.joefoxe.hexerei.item.custom;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import net.joefoxe.hexerei.util.legacymath.Vector3f;
 import net.joefoxe.hexerei.item.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.MapItem;
@@ -27,7 +28,7 @@ import java.util.OptionalInt;
 public class CrowBlankAmuletItemRenderer extends CustomItemRenderer {
 
     @Override
-    public void renderByItem(ItemStack stack, ItemTransforms.TransformType transformType, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+    public void renderByItem(ItemStack stack, ItemDisplayContext context, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 
 //        matrixStackIn.pushPose();
 //        matrixStackIn.translate(0.2, -0.1, -0.10);
@@ -36,7 +37,7 @@ public class CrowBlankAmuletItemRenderer extends CustomItemRenderer {
 //        Minecraft.getInstance().getBlockRenderer().renderSingleBlock(state, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn, ModelData.EMPTY, null);
 //        matrixStackIn.popPose();
 
-        this.renderTileStuff(stack.getOrCreateTag(), stack, transformType, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
+        this.renderTileStuff(stack.getOrCreateTag(), stack, context, matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
     }
 
     public static int getCustomColor(CompoundTag tag) {
@@ -48,14 +49,14 @@ public class CrowBlankAmuletItemRenderer extends CustomItemRenderer {
 
     private void renderItem(ItemStack stack, PoseStack matrixStackIn, MultiBufferSource bufferIn,
                             int combinedLightIn) {
-        Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemTransforms.TransformType.GUI, combinedLightIn,
-                OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn, 1);
+        Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemDisplayContext.GUI, combinedLightIn,
+                OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn, Minecraft.getInstance().level, 1);
     }
 
     private void renderItem(ItemStack stack, PoseStack matrixStackIn, MultiBufferSource bufferIn,
-                            int combinedLightIn, ItemTransforms.TransformType transformType) {
+                            int combinedLightIn, ItemDisplayContext transformType) {
         Minecraft.getInstance().getItemRenderer().renderStatic(stack, transformType, combinedLightIn,
-                OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn, 1);
+                OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn,Minecraft.getInstance().level, 1);
     }
 
     private void renderBlock(PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, BlockState state) {
@@ -73,7 +74,7 @@ public class CrowBlankAmuletItemRenderer extends CustomItemRenderer {
         return OptionalInt.empty();
     }
 
-    public void renderTileStuff(CompoundTag tag, ItemStack stack, ItemTransforms.TransformType transformType, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+    public void renderTileStuff(CompoundTag tag, ItemStack stack, ItemDisplayContext transformType, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 
         matrixStackIn.pushPose();
         matrixStackIn.translate(45/64f, 13/32f, 7/16f);
@@ -107,10 +108,10 @@ public class CrowBlankAmuletItemRenderer extends CustomItemRenderer {
                 Minecraft.getInstance().gameRenderer.getMapRenderer().render(matrixStackIn, bufferIn, getFramedMapId(otherItem).getAsInt(), mapitemsaveddata, true, combinedLightIn);
             matrixStackIn.popPose();
             matrixStackIn.translate(0, 0, 0.03F);
-            renderItem(new ItemStack(ModItems.CROW_BLANK_AMULET_TRINKET_FRAME.get()), matrixStackIn, bufferIn, combinedLightIn, ItemTransforms.TransformType.FIXED);
+            renderItem(new ItemStack(ModItems.CROW_BLANK_AMULET_TRINKET_FRAME.get()), matrixStackIn, bufferIn, combinedLightIn, ItemDisplayContext.FIXED);
         } else {
 
-            renderItem(new ItemStack(ModItems.CROW_BLANK_AMULET_TRINKET.get(), 1), matrixStackIn, bufferIn, combinedLightIn, ItemTransforms.TransformType.FIXED);
+            renderItem(new ItemStack(ModItems.CROW_BLANK_AMULET_TRINKET.get(), 1), matrixStackIn, bufferIn, combinedLightIn, ItemDisplayContext.FIXED);
             matrixStackIn.pushPose();
             BakedModel itemModel = Minecraft.getInstance().getItemRenderer().getModel(otherItem, null, null, 0);
             if(itemModel.isGui3d()) {
@@ -122,7 +123,7 @@ public class CrowBlankAmuletItemRenderer extends CustomItemRenderer {
                 matrixStackIn.scale(0.85F, 0.85F, 1F);
             }
             matrixStackIn.scale(0.7F, 0.7F, 0.7F);
-            renderItem(otherItem, matrixStackIn, bufferIn, combinedLightIn, ItemTransforms.TransformType.FIXED);
+            renderItem(otherItem, matrixStackIn, bufferIn, combinedLightIn, ItemDisplayContext.FIXED);
             matrixStackIn.popPose();
         }
 
@@ -156,7 +157,7 @@ public class CrowBlankAmuletItemRenderer extends CustomItemRenderer {
                 }
                 case ENTITYBLOCK_ANIMATED -> {
                     ItemStack stack = new ItemStack(p_110913_.getBlock());
-                    IClientItemExtensions.of(stack.getItem()).getCustomRenderer().renderByItem(stack, ItemTransforms.TransformType.NONE, p_110914_, p_110915_, p_110916_, p_110917_);
+                    IClientItemExtensions.of(stack.getItem()).getCustomRenderer().renderByItem(stack, ItemDisplayContext.NONE, p_110914_, p_110915_, p_110916_, p_110917_);
                 }
             }
 

@@ -1,7 +1,6 @@
 package net.joefoxe.hexerei.item.custom;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
 import net.joefoxe.hexerei.client.renderer.IFirstPersonItemAnimation;
 import net.joefoxe.hexerei.client.renderer.IThirdPersonItemAnimation;
 import net.joefoxe.hexerei.client.renderer.IThirdPersonItemRenderer;
@@ -12,6 +11,8 @@ import net.joefoxe.hexerei.item.ModItems;
 import net.joefoxe.hexerei.sounds.ModSounds;
 import net.joefoxe.hexerei.util.HexereiPacketHandler;
 import net.joefoxe.hexerei.util.HexereiUtil;
+import net.joefoxe.hexerei.util.VecUtil;
+import net.joefoxe.hexerei.util.legacymath.Vector3f;
 import net.joefoxe.hexerei.util.message.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -137,13 +138,13 @@ public class CrowFluteItem extends Item implements Container, IThirdPersonItemAn
                 ListTag id = itemstack.getOrCreateTag().getList("crowList", Tag.TAG_COMPOUND);
                 if(id.size() < 1)
                     return InteractionResult.FAIL;
-                if(!player.level.isClientSide){
+                if(!player.level().isClientSide){
                     for (int i = 0; i < id.size(); i++) {
                         CompoundTag tag = id.getCompound(i);
 
                         if (tag.contains("UUID")) {
                             UUID crowId = tag.getUUID("UUID");
-                            Entity entity = ((ServerLevel) player.level).getEntity(crowId);
+                            Entity entity = ((ServerLevel) player.level()).getEntity(crowId);
 
                             if (entity instanceof CrowEntity crow) {
                                 tag.putInt("ID", entity.getId());
@@ -161,7 +162,7 @@ public class CrowFluteItem extends Item implements Container, IThirdPersonItemAn
                     }
 
                     if (crows.size() > 0) {
-                        player.level.playSound(null, player.getX() + player.getLookAngle().x(), player.getY() + player.getEyeHeight(), player.getZ() + player.getLookAngle().z(), ModSounds.CROW_FLUTE.get(), SoundSource.PLAYERS, 1.0F, 0.8F + 0.4F * new Random().nextFloat());
+                        player.level().playSound(null, player.getX() + player.getLookAngle().x(), player.getY() + player.getEyeHeight(), player.getZ() + player.getLookAngle().z(), ModSounds.CROW_FLUTE.get(), SoundSource.PLAYERS, 1.0F, 0.8F + 0.4F * new Random().nextFloat());
                         player.getCooldowns().addCooldown(this, 20);
                     }
                 }
@@ -353,8 +354,8 @@ public class CrowFluteItem extends Item implements Container, IThirdPersonItemAn
                     CompoundTag tag = id.getCompound(i);
 
                     UUID crowId = tag.getUUID("UUID");
-                    tag.putInt("ID", ((ServerLevel) playerIn.level).getEntity(crowId).getId());
-                    crows.add((CrowEntity) ((ServerLevel) playerIn.level).getEntity(crowId));
+                    tag.putInt("ID", ((ServerLevel) playerIn.level()).getEntity(crowId).getId());
+                    crows.add((CrowEntity) ((ServerLevel) playerIn.level()).getEntity(crowId));
                 }
                 if(crows.size() < 1) {
                     crows = level.getEntitiesOfClass(CrowEntity.class, this.getTargetableArea(64, playerIn), this.targetEntitySelector);
@@ -561,35 +562,35 @@ public class CrowFluteItem extends Item implements Container, IThirdPersonItemAn
 
     public void setCommand(int command, ItemStack stack, Player player, InteractionHand hand) {
 
-        if (player.level.isClientSide)
+        if (player.level().isClientSide)
             HexereiPacketHandler.sendToServer(new CrowFluteCommandSyncToServer(stack, command, player.getUUID(), hand == InteractionHand.MAIN_HAND ? 0 : 1));
 
     }
 
     public void setHelpCommand(int helpCommand, ItemStack stack, Player player, InteractionHand hand) {
 
-        if (player.level.isClientSide)
+        if (player.level().isClientSide)
             HexereiPacketHandler.sendToServer(new CrowFluteHelpCommandSyncToServer(stack, helpCommand, player.getUUID(), hand == InteractionHand.MAIN_HAND ? 0 : 1));
 
     }
 
     public void setCommandMode(int mode, ItemStack stack, Player player, InteractionHand hand) {
 
-        if (player.level.isClientSide)
+        if (player.level().isClientSide)
             HexereiPacketHandler.sendToServer(new CrowFluteCommandModeSyncToServer(stack, mode, player.getUUID(), hand == InteractionHand.MAIN_HAND ? 0 : 1));
 
     }
 
     public void clearCrowList(ItemStack stack, Player player, InteractionHand hand) {
 
-        if (player.level.isClientSide)
+        if (player.level().isClientSide)
             HexereiPacketHandler.sendToServer(new CrowFluteClearCrowListToServer(stack, player.getUUID(), hand == InteractionHand.MAIN_HAND ? 0 : 1));
 
     }
 
     public void clearCrowPerch(ItemStack stack, Player player, InteractionHand hand) {
 
-        if (player.level.isClientSide)
+        if (player.level().isClientSide)
             HexereiPacketHandler.sendToServer(new CrowFluteClearCrowPerchToServer(stack, player.getUUID(), hand == InteractionHand.MAIN_HAND ? 0 : 1));
 
     }
@@ -774,7 +775,7 @@ public class CrowFluteItem extends Item implements Container, IThirdPersonItemAn
 
         if (!stack.isEmpty()) {
 
-            ItemTransforms.TransformType transform;
+            ItemDisplayContext transform;
 
             poseStack.pushPose();
 
@@ -789,15 +790,15 @@ public class CrowFluteItem extends Item implements Container, IThirdPersonItemAn
 //                head.translateAndRotate(poseStack);
                 poseStack.translate(head.x / 16.0F, head.y / 16.0F, head.z / 16.0F);
                 if (head.zRot != 0.0F) {
-                    poseStack.mulPose(Vector3f.ZP.rotation(head.zRot/ 1.75f));
+                    poseStack.mulPose(Vector3f.ZP.rotationf(head.zRot/ 1.75f));
                 }
 
                 if (head.yRot != 0.0F) {
-                    poseStack.mulPose(Vector3f.YP.rotation(head.yRot));
+                    poseStack.mulPose(Vector3f.YP.rotationf(head.yRot));
                 }
 
                 if (head.xRot != 0.0F) {
-                    poseStack.mulPose(Vector3f.XP.rotation(head.xRot/ 1.75f));
+                    poseStack.mulPose(Vector3f.XP.rotationf(head.xRot/ 1.75f));
                 }
 
                 head.xRot = oldRot;
@@ -809,29 +810,29 @@ public class CrowFluteItem extends Item implements Container, IThirdPersonItemAn
 //                parentModel.translateToHand(humanoidArm, poseStack);
                 CustomHeadLayer.translateToHead(poseStack, false);
                 poseStack.translate((leftHand ? -1 : 1) * 4f / 16f, -6 / 16f, -12 / 16f);
-                poseStack.mulPose(Vector3f.YP.rotationDegrees(180+(head.yRot * ((float) Math.PI * 2F) * 10) + (leftHand ? -1 : 1) * 10));
-                poseStack.mulPose(Vector3f.ZP.rotationDegrees( (leftHand ? 1 : -1) * 23));
+                poseStack.mulPose(Vector3f.YP.rotationDegreesf(180+(head.yRot * ((float) Math.PI * 2F) * 10) + (leftHand ? -1 : 1) * 10));
+                poseStack.mulPose(Vector3f.ZP.rotationDegreesf( (leftHand ? 1 : -1) * 23));
 //                poseStack.mulPose(Vector3f.ZP.rotationDegrees( (leftHand ? 1 : -1) * Hexerei.getClientTicks()));
 //                System.out.println(Hexerei.getClientTicks());
 //                poseStack.mulPose(Vector3f.XP.rotationDegrees(270 + (int)(Math.sin(Hexerei.getClientTicks()/ 10) * 25)));
 //                poseStack.translate( 0 / 16f, -8 / 16f, -2 / 16f);
-                poseStack.mulPose(Vector3f.XP.rotationDegrees((leftHand ? 1 : 0) * -90));
+                poseStack.mulPose(Vector3f.XP.rotationDegreesf((leftHand ? 1 : 0) * -90));
                 poseStack.translate(0, 7f / 16f, 8f / 16f);
 
 
 //                poseStack.translate(0, -4.25 / 16f, -8.5 / 16f);
 //                if (leftHand) poseStack.mulPose(Vector3f.XP.rotationDegrees(-90));
 
-                transform = ItemTransforms.TransformType.HEAD;
+                transform = ItemDisplayContext.HEAD;
             } else {
                 //default rendering
                 parentModel.translateToHand(humanoidArm, poseStack);
-                poseStack.mulPose(Vector3f.XP.rotationDegrees(-90.0F));
-                poseStack.mulPose(Vector3f.YP.rotationDegrees(180.0F));
+                poseStack.mulPose(Vector3f.XP.rotationDegreesf(-90.0F));
+                poseStack.mulPose(Vector3f.YP.rotationDegreesf(180.0F));
 
                 poseStack.translate((float) (leftHand ? -1 : 1) / 16.0F, 0.125D, -0.625D);
 
-                transform = leftHand ? ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND : ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND;
+                transform = leftHand ? ItemDisplayContext.THIRD_PERSON_LEFT_HAND : ItemDisplayContext.THIRD_PERSON_RIGHT_HAND;
             }
 
             Minecraft.getInstance().gameRenderer.itemInHandRenderer.renderItem(entity, stack, transform, leftHand, poseStack, bufferSource, light);
@@ -856,7 +857,7 @@ public class CrowFluteItem extends Item implements Container, IThirdPersonItemAn
             float sin = Mth.sin((timeLeft - 0.1F) * 1.3F);
 
             matrixStack.translate(0, sin * 0.0038F, 0);
-            matrixStack.mulPose(Vector3f.ZN.rotationDegrees(90));
+            matrixStack.mulPose(VecUtil.ZN.rotationDegreesf(90));
 
             matrixStack.scale(1.0F * mirror, -1.0F * mirror, -1.0F);
         }

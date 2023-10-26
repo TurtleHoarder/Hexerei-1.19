@@ -338,7 +338,7 @@ public class HerbJarTile extends RandomizableContainerBlockEntity implements Cle
         }
 
 
-        if (!this.itemHandler.getContents().get(0).sameItem(stack))
+        if (!ItemStack.isSameItem(this.itemHandler.getContents().get(0), stack))
             return 0;
         if(!ItemStack.isSameItemSameTags(stack, this.itemHandler.getContents().get(0)))
             return 0;
